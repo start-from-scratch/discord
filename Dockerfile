@@ -1,5 +1,5 @@
 FROM node:18
-WORKDIR /bot
+WORKDIR /home/bot
 COPY package*.json .
 RUN npm install
 COPY . .
