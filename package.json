@@ -1,5 +1,5 @@
 {
-  "name": "discord-bot",
+  "name": "bot",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scratch-on-scratch/discord-bot.git"
+    "url": "git+https://github.com/scratch-on-scratch/bot.git"
   },
-  "author": "scratch-on-scratch",
+  "author": "switchcodeur",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/scratch-on-scratch/discord-bot/issues"
+    "url": "https://github.com/scratch-on-scratch/bot/issues"
   },
-  "homepage": "https://github.com/scratch-on-scratch/discord-bot#readme",
+  "homepage": "https://github.com/scratch-on-scratch/bot#readme",
   "dependencies": {
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1"
