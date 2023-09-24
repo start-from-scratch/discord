@@ -6,5 +6,5 @@ Vous aurez besoin pour exécuter ce projet de [Node.js](https://nodejs.org) et d
 ```sh
 docker-compose build
 docker-compose up
-docker-compose run bot
+docker-compose run -d bot
 ```
