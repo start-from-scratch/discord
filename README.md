@@ -1,10 +1,14 @@
-# bot
-Ce dépôt contient l'ensemble des fichiers faisant fonctionner le robot du [serveur Scratch on Scratch](https://discord.gg/nCaaww6wyy).
-
-Vous aurez besoin pour exécuter ce projet de [Node.js](https://nodejs.org) et de [Docker](https://www.docker.com/).
-## Exécution 
+## run
 ```sh
-docker-compose build
-docker-compose up
-docker-compose run -d bot
+echo 'TOKEN="your_token"' > .env
+sudo apt-get update
+
+# run with docker
+sudo apt-get install -y docker docker-compose
+docker-compose up -d
+
+# run without docker
+sudo apt-get install -y python3 pip3
+python3 -m pip3 install -r requirements.txt
+python3 src/main.py 
 ```
