@@ -6,7 +6,7 @@ from discord import Intents
 from discord.ext import commands
 
 load_dotenv() 
-path = argv[0][:len(argv[0]) - list(reversed(list(argv[0]))).index("\\") - 1]
+path = argv[0][:len(argv[0]) - list(reversed(list(argv[0]))).index("/") - 1]
 
 file = open(path + "/../config.json", "r")
 config = json_loads(file.read())
