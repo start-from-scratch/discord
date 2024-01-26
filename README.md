@@ -2,6 +2,9 @@
 ```sh
 echo 'TOKEN="your_token"' > .env
 sudo apt-get update
+sudo apt-get install git
+git clone https://github.com/scratch-on-scratch/bot
+cd bot
 
 # run with docker
 sudo apt-get install -y docker docker-compose
