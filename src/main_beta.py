@@ -2,9 +2,8 @@ from dotenv import load_dotenv
 from os import getenv
 from sys import argv
 from json import loads as json_loads
-from discord import Intents
+from discord import Intents, Embed
 from discord.ext import commands
-from discord.embeds import Embed
 import time
 
 
@@ -36,7 +35,7 @@ async def ping(ctx):
    global uptime
    await ctx.message.delete()
    print(f"Test request by : {ctx.author} (commands = ping)")
-   embed = discord.Embed(title = "Status", description = f"{bot.user.name} ping is {round(client.latency)*1000} ms |  Uptime : <t:{uptime}:R>" , color = 0x71368A)
+   embed = Embed(title = "Status", description = f"{bot.user.name} ping is {round(client.latency)*1000} ms |  Uptime : <t:{uptime}:R>" , color = 0x71368A)
    embed.set_thumbnail(url = ctx.guild.icon_url)
    embed.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar_url)
    await ctx.reply(embed = embed)
