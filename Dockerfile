@@ -8,4 +8,4 @@ COPY . /usr/bot
 
 WORKDIR /usr/bot
 
-CMD ["sh", "run.sh"]
+CMD ["python3", "src/main.py"]
