@@ -1,17 +1,11 @@
-## run
+## Run
+To run the bot you need to execute the bash code wrote below.
 ```sh
-echo 'TOKEN="your_token"' > .env
-sudo apt-get update
-sudo apt-get install git
-git clone https://github.com/scratch-on-scratch/bot
-cd bot
+apt-get update
+apt-get install git docker docker-compose
 
-# run with docker
-sudo apt-get install -y docker docker-compose
+git clone https://github.com/scratch-on-scratch/bot .
+
 docker-compose up -d
-
-# run without docker
-sudo apt-get install -y python3 pip3
-python3 -m pip3 install -r requirements.txt
-python3 src/main.py 
 ```
+Warning: Make sure to have defined a valid token in `Dockerfile` before running the bot.
