@@ -1,6 +1,3 @@
-from asyncio.streams import _ClientConnectedCallback
-from http import client
-from multiprocessing.connection import Client
 from dotenv import load_dotenv
 from os import getenv
 from sys import argv
