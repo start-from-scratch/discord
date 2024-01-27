@@ -48,7 +48,7 @@ async def say(ctx, *content: str) -> None:
 async def status(ctx):
    global uptime
    await ctx.message.delete()    #supp le msg de la commande
-   print(f"Test request by : {ctx.author} in {ctx.guild_name}") #ecrire dans la console qui a fait la commande
+   print(f"Test request by : {ctx.author} in {ctx.guild.name}") #ecrire dans la console qui a fait la commande
    await ctx.channel.send(f"{bot.user.name} ping is {round(Client.latency)*1000} ms |  Uptime : <t:{uptime}:R>")
    await ctx.channel.send(f"Requested by : {ctx.author.mention}")  #ping le mec qui a fait la commande
 
