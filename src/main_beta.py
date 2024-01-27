@@ -1,3 +1,4 @@
+from asyncio.streams import _ClientConnectedCallback
 from http import client
 from multiprocessing.connection import Client
 from dotenv import load_dotenv
@@ -45,11 +46,12 @@ async def say(ctx, *content: str) -> None:
    #await ctx.channel.send(f"Ping author : {ctx.author.mention}")  #ping le mec qui a fait la commande
   
 @bot.command(name = "status")
+@commands.has_permissions(administrator = True)
 async def status(ctx):
    global uptime
    await ctx.message.delete()    #supp le msg de la commande
    print(f"Test request by : {ctx.author} in {ctx.guild.name}") #ecrire dans la console qui a fait la commande
-   await ctx.channel.send(f"{bot.user.name} ping is {round(Client.latency)*1000} ms |  Uptime : <t:{uptime}:R>")
+   await ctx.channel.send(f"{bot.user.name} ping is {round(_bot.latency)*1000} ms |  Uptime : <t:{uptime}:R>")
    await ctx.channel.send(f"Requested by : {ctx.author.mention}")  #ping le mec qui a fait la commande
 
 bot.run(token)
