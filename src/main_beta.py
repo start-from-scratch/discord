@@ -35,7 +35,7 @@ async def ping(ctx):
    global uptime
    await ctx.message.delete()
    print(f"Test request by : {ctx.author} (commands = status)")
-   embed = Embed(title = "Status", description = f"{bot.user.name} ping is {round(boy.latency)*1000} ms |  Uptime : <t:{uptime}:R>" , color = 0x71368A)
+   embed = Embed(title = "Status", description = f"{bot.user.name} ping is {round(bot.latency)*1000} ms |  Uptime : <t:{uptime}:R>" , color = 0x71368A)
    embed.set_thumbnail(url = ctx.guild.icon_url)
    embed.set_footer(text = f"Requested by {ctx.author}", icon_url = ctx.author.avatar_url)
    await ctx.reply(embed = embed)
