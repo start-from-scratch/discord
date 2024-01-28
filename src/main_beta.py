@@ -45,11 +45,12 @@ async def say(ctx, *content: str) -> None:
 @bot.command(name = "status")
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-   global uptime
-   await ctx.message.delete()    #supp le msg de la commande
-   print(f"Test request by : {ctx.author} in {ctx.guild.name}") #ecrire dans la console qui a fait la commande
-   await ctx.channel.send(f"{bot.user.name} ping is {round(bot.latency)*1000} ms |  Uptime : <t:{uptime}:R>")
-   await ctx.channel.send(f"Requested by : {ctx.author.mention}")  #ping le mec qui a fait la commande
+    global uptime
+    ping = round((time.time() - ctx.message.created_at.timestamp()) * 1000)
+    await ctx.message.delete()    # supprimer le message de la commande
+    print(f"Test request by: {ctx.author} in {ctx.guild.name}") # écrire dans la console qui a fait la commande
+    await ctx.channel.send(f"{bot.user.name} ping is {ping} ms | Uptime: <t:{uptime}:R>")
+    await ctx.channel.send(f"Requested by: {ctx.author.mention}")  # ping le mec qui a fait la commande
 
 bot.run(token)
 
