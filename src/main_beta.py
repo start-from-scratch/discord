@@ -31,7 +31,7 @@ async def say(
   await ctx.channel.send(message)
   
 @bot.slash_command(
-    name = "status" 
+    name = "status",
     description = "Avoir des Informations sur le bot" 
  )
 @commands.has_permissions(administrator = True)
