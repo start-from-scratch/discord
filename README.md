@@ -12,4 +12,3 @@ python3 -m pip install -r requirements.txt
 python3 src/main.py
 ```
 Warning: Make sure to have defined a valid token in `config.json` before running the bot.
--
