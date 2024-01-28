@@ -2,10 +2,12 @@
 To run the bot you need to execute the bash code wrote below.
 ```sh
 apt-get update
-apt-get install git docker docker-compose
+apt-get install git python3 pip
 
-git clone https://github.com/scratch-on-scratch/bot .
+git clone https://github.com/scratch-on-scratch/bot 
+cd bot
 
-docker-compose up -d
+python -m venv venv
+python -m pip install -r requirements.txt
 ```
-Warning: Make sure to have defined a valid token in `Dockerfile` before running the bot.
+Warning: Make sure to have defined a valid token in `config.json` before running the bot.
