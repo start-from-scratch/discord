@@ -42,7 +42,7 @@ async def status(ctx):
 
 def ping(message_timestamp):
     ping = round((time.time() - message_timestamp) * 1000)
-    print(f"Ping du bot {bot.user.name} : {ping}")
+    print(f"Ping du bot {bot.user.name} : {ping} ms")
     return ping
 
 bot.run(token)
