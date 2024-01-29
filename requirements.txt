@@ -1,3 +1,4 @@
-dotenv
+py-cord
+dotenv 
 discord.py
 time
