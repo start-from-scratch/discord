@@ -1,11 +1,7 @@
-from json import loads as json_loads
-
 import discord
 from discord.ext import commands
 
-file = open("config.json", "r")
-config = json_loads(file.read())
-
+token = open("config.json", "r").read()
 bot = commands.Bot()
 
 @bot.event
@@ -24,4 +20,4 @@ async def say(
   await ctx.delete()
   await ctx.channel.send(message)
 
-bot.run(config.get("token"))
+bot.run(token)
