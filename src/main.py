@@ -1,12 +1,27 @@
-import discord
+from discord import application_command, Option, Interaction
 from discord.ext import commands
+from logging import basicConfig, StreamHandler, FileHandler, DEBUG, INFO, WARN, ERROR, log
+from sys import stdout
 
-token = open("config.json", "r").read()
+token = open("token.txt", "r").read()
 bot = commands.Bot()
+
+basicConfig(
+  level = DEBUG,
+  format = "%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d]: %(message)s",
+  handlers = [
+    FileHandler(
+      filename = "discord.log",
+      encoding = "utf-8",
+      mode = "a"
+    ),
+    StreamHandler(stdout)
+  ]
+)
 
 @bot.event
 async def on_ready() -> None:
-  print(bot.user.name, "is ready")
+  log(INFO, f"{bot.user.name} now ready.")
 
 @bot.slash_command(
   name = "dire",
@@ -14,8 +29,8 @@ async def on_ready() -> None:
 )
 @commands.has_permissions(administrator = True)
 async def say(
-  ctx: discord.application_command(), 
-  message: discord.Option(str)
+  ctx: application_command(), 
+  message: Option(str)
 ) -> None:
   await ctx.delete()
   await ctx.channel.send(message)

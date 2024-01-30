@@ -1,10 +1,11 @@
+# pixelbot
 ## Run
 To run the bot you need to execute the bash code wrote below.
 ```sh
 apt-get update
 apt-get install git python3 pip
 
-git clone https://github.com/scratch-on-scratch/bot 
+git clone https://github.com/start-from-scratch/pixelbot
 cd bot
 
 python3 -m venv venv
