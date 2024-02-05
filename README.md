@@ -1,15 +1,8 @@
-# pixelbot
-## Run
-To run the bot you need to execute the bash code wrote below.
-```sh
+![banner](banner.png)
+# run
+```bash
 apt-get update
-apt-get install git python3 pip
-
+apt-get install git podman
 git clone https://github.com/start-from-scratch/pixelbot
-cd bot
-
-python3 -m venv venv
-python3 -m pip install -r requirements.txt
-python3 src/main.py
+podman build -t pixelbot .
 ```
-Warning: Make sure to have wrote a valid token in `token.txt` before running the bot.
