@@ -1,4 +1,3 @@
-![banner](banner.png)
 # run
 ```bash
 apt-get update
