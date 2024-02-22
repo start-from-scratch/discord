@@ -55,7 +55,6 @@ async def say(
  )
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-    global uptime
     await ctx.message.delete()    # supprimer le message de la commande
     print(f"Test request by: {ctx.author} in {ctx.guild.name}") # écrire dans la console qui a fait la commande
     await ctx.channel.send(f"{bot.user.mention} ping is {ping(ctx.message.created_at.timestamp())} ms | Uptime: <t:{uptime}:R>")
