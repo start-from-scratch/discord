@@ -2,14 +2,13 @@ from discord import application_command, Option, Interaction
 from discord.ext import commands
 from logging import basicConfig, StreamHandler, FileHandler, DEBUG, INFO, WARN, ERROR, log
 from sys import stdout
-from os import environ
 import time
 
-token = environ["TOKEN"]
-print(environ, token)
-bot = commands.Bot()
+with open("token.txt", "r") as f:
+  token = f.read()
+  f.close()
 uptime = 0
-
+bot = commands.Bot()
 basicConfig(
   level = DEBUG,
   format = "%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d]: %(message)s",
