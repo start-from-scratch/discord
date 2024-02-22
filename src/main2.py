@@ -7,8 +7,10 @@ import time
 with open("token.txt", "r") as f:
   token = f.read()
   f.close()
+  
 uptime = 0
 bot = commands.Bot()
+
 basicConfig(
   level = DEBUG,
   format = "%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d]: %(message)s",
@@ -40,7 +42,7 @@ async def on_ready() -> None:
 )
 @commands.has_permissions(administrator = True)
 async def say(
-  ctx: discord.application_command(), 
+  ctx: application_command(), 
   message: Option(str)
 ) -> None:
   await ctx.delete()
