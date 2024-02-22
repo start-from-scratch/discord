@@ -2,10 +2,11 @@ from discord import application_command, Option, Interaction
 from discord.ext import commands
 from logging import basicConfig, StreamHandler, FileHandler, DEBUG, INFO, WARN, ERROR, log
 from sys import stdout
-from os import environ
 
-token = environ["TOKEN"]
-print(environ, token)
+with open("token.txt", "r") as f:
+  token = f.read()
+  f.close()
+
 bot = commands.Bot()
 
 basicConfig(

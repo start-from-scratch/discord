@@ -1,7 +1,5 @@
 FROM python:3.8.9
 
-ENV TOKEN "MTEyNjQyOTkyODYxMTY0MzU0NA.G5eC3W.gySwdBcRIi0GoHyMQGFNSHWL6U7ep64G6AatG4"
-
 COPY . /usr/containers/pixelbot
 
 WORKDIR /usr/containers/pixelbot
