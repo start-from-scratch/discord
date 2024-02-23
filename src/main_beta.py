@@ -7,6 +7,10 @@ import time
 with open("token.txt", "r") as f:
   token = f.read()
   f.close()
+
+with open("id.txt", "r") as f:
+  id = f.read()
+  f.close()
   
 uptime = 0
 bot = commands.Bot()
@@ -34,7 +38,7 @@ async def on_ready() -> None:
     global uptime
     uptime = round(time.time())        #mettre la variable uptime au timestamp de demarage 
     log(INFO, f"{bot.user.name} now ready.")
-    await bot.get_channel(1201190228233310248).send(f"Bot {bot.user.mention} demarré :green_circle: ") #mettre votre id de salon ou va etre envoyer quand le bot est allumé
+    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: ") #envoie un msg dans le salon id au demarrage du bot
 
 @bot.slash_command(
   name = "say",
