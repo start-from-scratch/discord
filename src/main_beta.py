@@ -9,7 +9,7 @@ with open("token.txt", "r") as f:
   f.close()
 
 with open("id.txt", "r") as f:
-  id = f.read()
+  id = int(f.read())
   f.close()
   
 uptime = 0
