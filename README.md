@@ -8,6 +8,7 @@ git clone https://github.com/start-from-scratch/pixelbot
 
 cd pixelbot
 echo "votre_token" > token.txt
+echo "id du salon ou doit etre envoyer le msg de demarrage" > id.txt
 ```
 
 Pour faire fonctionner le robot sur une courte durée :
