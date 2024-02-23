@@ -11,12 +11,12 @@ with open("id.txt", "r") as f:
   id = int(f.read())
   f.close()
   
-start = int(time())
+start = int(time()) #voir uptime 
 bot = commands.Bot()
 
 @bot.event
 async def on_ready() -> None:
-    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle:  (Version Beta) ") #envoie un msg dans le salon id au demarrage du bot
+    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle:") #envoie un msg dans le salon id au demarrage du bot
 
 @bot.slash_command(
   name = "say",
@@ -38,5 +38,6 @@ async def say(
 async def status(ctx):
     ping = round(bot.latency * 1000)
     await ctx.respond(f"{bot.user.mention} ping is {ping} ms | A été lancé <t:{start}:R> \n Requested by: {ctx.author.mention}")
+
 
 bot.run(token)
