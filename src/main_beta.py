@@ -18,6 +18,13 @@ bot = commands.Bot()
 async def on_ready() -> None:
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
 
+@bot.event #ghost ping
+async def on_message_delete(message):
+    if message.mentions:
+        for user in message.mentions:
+            await user.send(f"Vous avez été ghost ping par {message.author.name} dans {message.guild.name}")
+
+
 @bot.slash_command(
   name = "say",
   description = "Fais dire quelque chose au bot."
