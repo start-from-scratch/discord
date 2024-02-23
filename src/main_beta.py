@@ -49,7 +49,8 @@ async def say(
   ctx: application_command(), 
   message: Option(str)
 ) -> None:
-  await ctx.channel.send(message)
+ if not ctx.author.bot:
+        await ctx.channel.send(message)
 
   
 @bot.slash_command(
