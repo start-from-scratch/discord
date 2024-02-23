@@ -18,11 +18,13 @@ bot = commands.Bot()
 async def on_ready() -> None:
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
 
-@bot.event #ghost ping
+@bot.event
 async def on_message_delete(message):
+    channel_id = message.channel.id
     if message.mentions:
         for user in message.mentions:
-            await user.send(f"Vous avez été ghost ping par {message.author.name} dans {message.guild.name}")
+            await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel_id} du serveur {message.guild.name}")
+            await bot.get_channel(channel_id).send(f"{message.mentions} vous avez été ghost ping par {message.author.name}")
 
 
 @bot.slash_command(
