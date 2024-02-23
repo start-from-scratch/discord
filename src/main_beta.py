@@ -59,9 +59,9 @@ async def say(
  )
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-    await ctx.delete()    # supprimer le message de la commande
     log(INFO, f"Test request by: {ctx.author} in {ctx.guild.name}") # écrire dans la console qui a fait la commande
     await ctx.channel.send(f"{bot.user.mention} ping is {ping(ctx.message.created_at.timestamp())} ms | Uptime: <t:{uptime}:R> \n Requested by: {ctx.author.mention}")
+    await ctx.delete()    # supprimer le message de la commande
 
 
 bot.run(token)
