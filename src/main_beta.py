@@ -30,14 +30,14 @@ basicConfig(
 
 def ping(message_timestamp):
     ping = round((time.time() - message_timestamp) * 1000)
-    log(INFO, f"Ping du bot {bot.user.name} : {ping} ms")
+    #print(f"Ping du bot {bot.user.name} : {ping} ms")
     return ping
 
 @bot.event
 async def on_ready() -> None:
     global uptime
     uptime = round(time.time())        #mettre la variable uptime au timestamp de demarage 
-    log(INFO, f"{bot.user.name} now ready.")
+    #print(f"{bot.user.name} now ready.")
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: ") #envoie un msg dans le salon id au demarrage du bot
 
 @bot.slash_command(
@@ -59,7 +59,7 @@ async def say(
  )
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-    log(INFO, f"Test request by: {ctx.author} in {ctx.guild.name}") # écrire dans la console qui a fait la commande
+    #print(f"Test request by: {ctx.author} in {ctx.guild.name}") # écrire dans la console qui a fait la commande
     await ctx.channel.send(f"{bot.user.mention} ping is {ping(ctx.message.created_at.timestamp())} ms | Uptime: <t:{uptime}:R> \n Requested by: {ctx.author.mention}")
 
 
