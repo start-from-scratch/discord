@@ -38,7 +38,7 @@ async def on_ready() -> None:
     global uptime
     uptime = round(time.time())        #mettre la variable uptime au timestamp de demarage 
     #print(f"{bot.user.name} now ready.")
-    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: ") #envoie un msg dans le salon id au demarrage du bot
+    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle:  (Version Beta) ") #envoie un msg dans le salon id au demarrage du bot
 
 @bot.slash_command(
   name = "say",
