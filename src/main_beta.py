@@ -11,7 +11,7 @@ with open("id.txt", "r") as f:
   id = int(f.read())
   f.close()
   
-start = int(time()) #voir uptime 
+start = int(time())          #voir uptime 
 bot = commands.Bot()
 
 @bot.event
@@ -36,8 +36,15 @@ async def say(
 )
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-    ping = round(bot.latency * 1000)
-    await ctx.respond(f"{bot.user.mention} ping is {ping} ms | A été lancé <t:{start}:R> \n Requested by: {ctx.author.mention}")
+    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms | A été lancé <t:{start}:R> \n Requested by: {ctx.author.mention}")
+
+@bot.slash_command(
+    name = "ping",
+    description = "Avoir le ping du bot" 
+)
+@commands.has_permissions(administrator = True)
+async def status(ctx):
+    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms")
 
 
 bot.run(token)
