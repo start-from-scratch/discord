@@ -49,6 +49,7 @@ async def say(
   ctx: application_command(), 
   message: Option(str)
 ) -> None:
+  await ctx.delete()
   await ctx.channel.send(message)
 
   
