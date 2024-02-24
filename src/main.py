@@ -16,7 +16,7 @@ bot = commands.Bot()
 
 @bot.event
 async def on_ready() -> None:
-    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
+    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle:") #envoie un msg dans le salon id au demarrage du bot
 
 @bot.event
 async def on_message_delete(message):
