@@ -40,11 +40,10 @@ async def say(
   await ctx.channel.send(message)
 
 @bot.slash_command(
-    name = "status",
+    name = "infos",
     description = "Avoir des Informations sur le bot" 
 )
-@commands.has_permissions(administrator = True)
-async def status(ctx):
+async def infos(ctx):
     await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveurs \n Requested by: {ctx.author.mention}")
 
 @bot.slash_command(
@@ -59,10 +58,7 @@ async def status(ctx):
     description = "Liste des commandes disponibles" 
 )
 async def help(ctx):
-    help_message = "Commandes disponibles : \n"
-    for command in bot.commands:
-      help_message += f"`/{command.name}` - {command.description} \n"
-    await ctx.respond(help_message)
+    await ctx.respond(f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)")
 
 
 bot.run(token)
