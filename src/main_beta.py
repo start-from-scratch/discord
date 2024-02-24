@@ -18,8 +18,8 @@ bot = commands.Bot()
 
 def create_embed(titre, description, auteur):
     embed = discord.Embed(title=titre, description=description, color=discord.Color.random())
-    embed.add_field(name="Champ 1", value="Valeur 1")
-    embed.set_footer(text="Pied de page de l'embed")
+    #embed.add_field(name="Champ 1", value="Valeur 1")
+    embed.set_footer(text=f"Requested by:{auteur}")
     #embed.set_image(url="")
     embed.set_author(name=auteur)
     return embed
@@ -75,8 +75,8 @@ async def help(ctx):
     description="Crée un embed" 
 )
 async def embed(ctx, 
-  titre: Option(str, default=""), 
-  description: Option(str, default="")
+  titre: Option(str), 
+  description: Option(str)
 ):
   embed = create_embed(titre, description, ctx.author.name)
   await ctx.respond(embed=embed)
