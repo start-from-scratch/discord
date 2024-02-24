@@ -16,12 +16,12 @@ start = int(time())          #voir uptime
 bot = commands.Bot()
 
 
-def create_embed(titre, description, auteur):
+def create_embed(titre, description, auteur, auteur_url):
     embed = discord.Embed(title=titre, description=description, color=discord.Color.random())
     #embed.add_field(name="Champ 1", value="Valeur 1")
-    embed.set_footer(text=f"Requested by:{auteur}")
-    #embed.set_image(url="")
-    embed.set_author(name=auteur)
+    embed.set_footer(text=f"Requested by:{auteur}",icon=auteur_url)
+    #embed.set_image(url=auteur_url)
+    #embed.set_author(name=auteur)
     return embed
 
 @bot.event
@@ -78,7 +78,7 @@ async def embed(ctx,
   titre: Option(str), 
   description: Option(str)
 ):
-  embed = create_embed(titre, description, ctx.author.name)
+  embed = create_embed(titre, description, ctx.author.name, ctx.author.icon_url)
   await ctx.respond(embed=embed)
 
 bot.run(token)
