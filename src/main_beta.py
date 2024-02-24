@@ -79,7 +79,10 @@ async def embed(ctx,
   titre: Option(str), 
   description: Option(str)
 ):
-  embed = create_embed(titre, description, ctx.author.name, ctx.author.icon_url)
+  embed = create_embed(titre, description, ctx.author.name, ctx.author.avatar_url)
   await ctx.respond(embed=embed)
+
+
+
 
 bot.run(token)
