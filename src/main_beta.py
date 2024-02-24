@@ -1,4 +1,5 @@
-from discord import application_command, Option, Embed, Color
+#from discord import application_command, Option, Embed, Color
+import discord
 from discord.ext import commands
 from logs import logger
 from time import time
