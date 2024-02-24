@@ -75,8 +75,8 @@ async def help(ctx):
     description="Crée un embed" 
 )
 async def embed(ctx, 
-  titre: Option(str), 
-  description: Option(str)
+  titre: Option(str, default=""), 
+  description: Option(str, default="")
 ):
   embed = create_embed(titre, description, ctx.author.name)
   await ctx.respond(embed=embed)
