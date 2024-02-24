@@ -16,7 +16,7 @@ start = int(time())          #voir uptime
 bot = commands.Bot()
 
 
-def embed(titre, description, auteur):
+def create_embed(titre, description, auteur):
     embed = discord.Embed(title=titre, description=description, color=discord.Color.random())
     embed.add_field(name="Champ 1", value="Valeur 1")
     embed.set_footer(text="Pied de page de l'embed")
@@ -42,7 +42,7 @@ async def on_message_delete(message):
 )
 async def embed(ctx, titre: Option(str), description: Option(str)):
     await ctx.delete()
-    await ctx.channel.send(embed=embed(titre, description, ctx.author.name))
+    await ctx.channel.send(embed=create_embed(titre, description, ctx.author.name))
 
                            
 @bot.slash_command(
