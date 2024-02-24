@@ -78,7 +78,6 @@ async def embed(ctx,
   titre: Option(str), 
   description: Option(str)
 ):
-    await ctx.delete()
-    await ctx.channel.send(embed=create_embed(titre, description, ctx.author.name))
+    await ctx.respond(embed=create_embed(titre, description, ctx.author.name))
 
 bot.run(token)
