@@ -42,7 +42,8 @@ async def on_message_delete(message):
 )
 async def embed(ctx, Titre: Option(str), Description: Option(str)):
     await ctx.delete()
-    await ctx.channel.send(embed=embed(Titre, Description, ctx.author.name))
+    embed = embed(Titre, Description, ctx.author.name)
+    await ctx.channel.send(embed=embed)
 
                            
 @bot.slash_command(
