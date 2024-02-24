@@ -45,15 +45,24 @@ async def say(
 )
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n  A été lancé <t:{start}:R> \n  Actuellement dans {len(bot.guilds)} serveurs \n Requested by: {ctx.author.mention}")
+    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveurs \n Requested by: {ctx.author.mention}")
 
 @bot.slash_command(
     name = "ping",
     description = "Avoir le ping du bot" 
 )
-@commands.has_permissions(administrator = True)
 async def status(ctx):
     await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms")
+
+@bot.slash_command(
+    name = "help",
+    description = "Liste des commandes disponibles" 
+)
+async def help(ctx):
+    help_message = "Commandes disponibles : \n"
+    for command in bot.commands:
+      help_message += f"`/{command.name}` - {command.description} \n"
+    await ctx.respond(help_message)
 
 
 bot.run(token)
