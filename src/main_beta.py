@@ -45,7 +45,7 @@ async def say(
 )
 @commands.has_permissions(administrator = True)
 async def status(ctx):
-    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms | A été lancé <t:{start}:R> \n Requested by: {ctx.author.mention}")
+    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n  A été lancé <t:{start}:R> \n  Actuellement dans {len(bot.guilds)} serveurs \n Requested by: {ctx.author.mention}")
 
 @bot.slash_command(
     name = "ping",
