@@ -36,14 +36,6 @@ async def on_message_delete(message):
             await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}")
             await channel.send(f"{user.mention} vous avez été ghost ping par {message.author.mention}")
 
-@bot.slash_command(
-    name="embed",
-    description="Crée un embed" 
-)
-async def embed(ctx, titre: Option(str), description: Option(str)):
-    await ctx.delete()
-    await ctx.channel.send(embed=create_embed(titre, description, ctx.author.name))
-
                            
 @bot.slash_command(
   name = "say",
@@ -77,5 +69,14 @@ async def status(ctx):
 )
 async def help(ctx):
     await ctx.respond(f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)")
+
+@bot.slash_command(
+    name= "embed",
+    description="Crée un embed" 
+)
+async def embed(ctx, titre: Option(str), description: Option(str)):
+    await ctx.delete()
+    await ctx.channel.send(embed=create_embed(titre, description, ctx.author.name))
+
 
 bot.run(token)
