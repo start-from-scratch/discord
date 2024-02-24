@@ -15,13 +15,13 @@ start = int(time())          #voir uptime
 bot = commands.Bot()
 
 
-def embed(Titre, Description, Auteur):
+def embed(titre, description, auteur):
     embed = discord.Embed(
-        title=Titre,
-        description=Description,
+        title=titre,
+        description=description,
         color=discord.Color.blue()
     )
-    embed.set_author(name=Auteur, icon_url='URL de l\'icône')
+    embed.set_author(name=auteur, icon_url='URL de l\'icône')
     embed.add_field(name='Champ 1', value='Valeur 1', inline=False)
     embed.add_field(name='Champ 2', value='Valeur 2', inline=False)
     embed.set_footer(text='Pied de page de l\'embed')
