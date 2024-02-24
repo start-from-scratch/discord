@@ -19,7 +19,8 @@ bot = commands.Bot()
 def create_embed(titre, description, auteur, auteur_url):
     embed = discord.Embed(title=titre, description=description, color=discord.Color.random())
     #embed.add_field(name="Champ 1", value="Valeur 1")
-    embed.set_footer(text=f"Requested by:{auteur}",icon=auteur_url)
+    embed.set_footer(text=f"Requested by:{auteur}")
+    embed.set_thumbnail(url=auteur_url)
     #embed.set_image(url=auteur_url)
     #embed.set_author(name=auteur)
     return embed
