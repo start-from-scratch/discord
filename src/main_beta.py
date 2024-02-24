@@ -1,4 +1,4 @@
-from discord import application_command, Option
+from discord import application_command, Option, Embed, Color
 from discord.ext import commands
 from logs import logger
 from time import time
@@ -13,6 +13,29 @@ with open("id.txt", "r") as f:
   
 start = int(time())          #voir uptime 
 bot = commands.Bot()
+
+
+def embed(Titre, Description, Auteur):
+    embed = discord.Embed(
+        title=Titre,
+        description=Description,
+        color=discord.Color.blue()
+    )
+    embed.set_author(name=Auteur, icon_url='URL de l\'icône')
+    embed.add_field(name='Champ 1', value='Valeur 1', inline=False)
+    embed.add_field(name='Champ 2', value='Valeur 2', inline=False)
+    embed.set_footer(text='Pied de page de l\'embed')
+    return embed
+
+@bot.slash_command(
+    name="embed",
+    description="Crée un embed" 
+)
+async def embed(ctx: application_command(), 
+                Titre: Option(str),
+                Description: Option(str)):
+    await ctx.delete()
+    await ctx.channel.send(embed=embed(Titre, Description, ctx.author.name))
 
 @bot.event
 async def on_ready() -> None:
@@ -59,6 +82,5 @@ async def status(ctx):
 )
 async def help(ctx):
     await ctx.respond(f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)")
-
 
 bot.run(token)
