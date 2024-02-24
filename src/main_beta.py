@@ -24,7 +24,7 @@ async def on_message_delete(message):
         for user in message.mentions:
             channel = bot.get_channel(message.channel.id)
             await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}")
-            await channel.send(f"{user.mentions} vous avez été ghost ping par {message.author.mention}")
+            await channel.send(f"{user.mention} vous avez été ghost ping par {message.author.mention}")
 
 
 @bot.slash_command(
