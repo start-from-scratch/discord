@@ -38,9 +38,9 @@ async def on_message_delete(message):
                   channel = bot.get_channel(message.channel.id)
                   await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}")
                   embed = create_embed("Ghost Ping","Un Ghost ping vient d'être détecté", bot.user.name, discord.Color.random())
-                  embed.add_field(name="Author:", value= message.author.mention, inline = True)
+                  embed.add_field(name="Auteur:", value= message.author.mention, inline = True)
                   embed.add_field(name="Mention:", value=user.mention, inline = True)
-                  embed.add_field(name="Channel:", value=f"ID: {message.channel.id} \n Name: {message.channel.name}", inline = False)
+                  embed.add_field(name="Salon:", value=f"ID: {message.channel.id} \n Nom: {message.channel.name}", inline = False)
                   await channel.send(embed=embed) 
 
                            
@@ -91,8 +91,6 @@ async def embed(ctx,
 ):
   embed = create_embed(titre, description, ctx.author.name,0x093156)
   await ctx.respond(embed=embed)
-
-
 
 
 bot.run(token)
