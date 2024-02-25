@@ -32,13 +32,14 @@ async def on_ready() -> None:
 async def on_message_delete(message):
     if message.mentions and not message.author.bot:
         for user in message.mentions:
-            channel = bot.get_channel(message.channel.id)
-            await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}", )
-            embed = create_embed("Ghost Ping","Un Ghost ping viens d'etre detecte", bot.user.name, discord.Color.random())
-            embed.add_field(name="Author:", value= message.author.mention, inline = True)
-            embed.add_field(name="Mention:", value=user.mention, inline = True)
-            embed.add_field(name="Channel:", value=f"ID: {message.channel.id} \n Name: {message.channel.name}", inline = False)
-            await channel.send(embed=embed)
+            if not user.bot and not user == message.author:
+                channel = bot.get_channel(message.channel.id)
+                await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}")
+                embed = create_embed("Ghost Ping","Un Ghost ping vient d'être détecté", bot.user.name, discord.Color.random())
+                embed.add_field(name="Author:", value= message.author.mention, inline = True)
+                embed.add_field(name="Mention:", value=user.mention, inline = True)
+                embed.add_field(name="Channel:", value=f"ID: {message.channel.id} \n Name: {message.channel.name}", inline = False)
+                await channel.send(embed=embed)
 
                            
 @bot.slash_command(
