@@ -34,7 +34,7 @@ async def on_message_delete(message):
     return
   if message.mentions and not message.author.bot:
           for user in message.mentions:
-            if not message.mentions.bot:
+            if not user.bot:
                   channel = bot.get_channel(message.channel.id)
                   await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}")
                   embed = create_embed("Ghost Ping","Un Ghost ping vient d'être détecté", bot.user.name, discord.Color.random())
