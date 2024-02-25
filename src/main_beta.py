@@ -16,7 +16,7 @@ start = int(time())          #voir uptime
 bot = commands.Bot()
 
 
-def create_embed(titre, description, auteur):
+def create_embed(titre, description, auteur,option):
     embed = discord.Embed(title=titre, description=description, color=discord.Color.random())
     #embed.add_field(name="Champ 1", value="Valeur 1")
     #embed.set_author(name= auteur)
@@ -33,8 +33,12 @@ async def on_message_delete(message):
     if message.mentions:
         for user in message.mentions:
             channel = bot.get_channel(message.channel.id)
-            await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}")
-            await channel.send(f"{user.mention} vous avez été ghost ping par {message.author.mention}")
+            await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}", )
+            embed = create_embed("Ghost Ping","Un Ghost ping viens d'etre detecte", {bot.user.name})
+            embed.add_field(name="Author:", value={message.author.mention}, inline = True)
+            embed.add_field(name="Mention:", value={user.mention}, inline = True)
+            embed.add_field(name="Channel:", value=f"ID: {message.channel.id} \n Name: {message.channel.name}", inline = True)
+            await channel.send(embed=embed)
 
                            
 @bot.slash_command(
