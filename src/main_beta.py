@@ -75,7 +75,7 @@ async def ping(ctx):
     description = "Liste des commandes disponibles" 
 )
 async def help(ctx):
-    embed = create_embed("Help", f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)", ctx.author.name, 0x200B9C)
+    embed = create_embed("Help", f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only) \n `/embed` - Crée un embed", ctx.author.name, 0x200B9C)
     await ctx.respond(embed=embed)
 
 @bot.slash_command(
