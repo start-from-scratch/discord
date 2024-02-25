@@ -54,21 +54,25 @@ async def say(
     description = "Avoir des Informations sur le bot" 
 )
 async def infos(ctx):
-    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveurs \n Requested by: {ctx.author.mention}")
+    embed = create_embed("Infos", f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveurs", ctx.author.name)
+    await ctx.respond(embed=embed)
+
 
 @bot.slash_command(
     name = "ping",
     description = "Avoir le ping du bot" 
 )
 async def status(ctx):
-    await ctx.respond(f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms")
+    embed = create_embed("Ping", f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms", ctx.author.name)
+    await ctx.respond(embed=embed)
 
 @bot.slash_command(
     name = "help",
     description = "Liste des commandes disponibles" 
 )
 async def help(ctx):
-    await ctx.respond(f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)")
+    embed = create_embed("Help", f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)", ctx.author.name)
+    await ctx.respond(embed=embed)
 
 @bot.slash_command(
     name= "embed",
