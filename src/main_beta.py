@@ -14,7 +14,6 @@ with open("id.txt", "r") as f:
   
 start = int(time())          #voir uptime 
 bot = commands.Bot()
-demarrage = 0
 
 
 def create_embed(titre, description, auteur):
@@ -27,9 +26,8 @@ def create_embed(titre, description, auteur):
 
 @bot.event
 async def on_ready() -> None:
-    if demarrage == 0 :
-      await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
-      demarrage = 1
+    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
+    demarrage = 1
 
 @bot.event
 async def on_message_delete(message):
@@ -37,9 +35,9 @@ async def on_message_delete(message):
         for user in message.mentions:
             channel = bot.get_channel(message.channel.id)
             await user.send(f"Vous avez été ghost ping par {message.author.name} dans le salon {channel.name} du serveur {message.guild.name}", )
-            embed = create_embed("Ghost Ping","Un Ghost ping viens d'etre detecte", {bot.user.name})
-            embed.add_field(name="Author:", value={message.author.mention}, inline = True)
-            embed.add_field(name="Mention:", value={user.mention}, inline = True)
+            embed = create_embed("Ghost Ping","Un Ghost ping viens d'etre detecte", bot.user.name)
+            embed.add_field(name="Author:", value= message.author.mention, inline = True)
+            embed.add_field(name="Mention:", value=user.mention, inline = True)
             embed.add_field(name="Channel:", value=f"ID: {message.channel.id} \n Name: {message.channel.name}", inline = True)
             await channel.send(embed=embed)
 
