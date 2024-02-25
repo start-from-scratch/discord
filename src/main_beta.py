@@ -21,7 +21,7 @@ def create_embed(titre, description, auteur, couleur):
     #embed.add_field(name="Champ 1", value="Valeur 1")
     #embed.set_author(name= auteur)
     #embed.set_thumbnail(url=auteur_url)
-    embed.set_footer(text=f"Information requested by: {auteur}")
+    embed.set_footer(text=f"Informations demandées par : {auteur}")
     return embed
 
 @bot.event
@@ -61,7 +61,7 @@ async def say(
     description = "Avoir des Informations sur le bot" 
 )
 async def infos(ctx):
-    embed = create_embed("Infos", f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveurs", ctx.author.name, 0x008FFF)
+    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
     await ctx.respond(embed=embed)
 
 
@@ -70,7 +70,7 @@ async def infos(ctx):
     description = "Avoir le ping du bot" 
 )
 async def ping(ctx):
-    embed = create_embed("Ping", f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms", ctx.author.name, 0xFFA900)
+    embed = create_embed("Ping", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms", ctx.author.name, 0xFFA900)
     await ctx.respond(embed=embed)
 
 @bot.slash_command(
