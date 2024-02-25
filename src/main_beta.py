@@ -30,7 +30,7 @@ async def on_ready() -> None:
 
 @bot.event
 async def on_message_delete(message):
-  if message.author.id in message.mentions.id:
+  if message.author in message.mentions:
     return
   if message.mentions and not message.author.bot:
           for user in message.mentions:
