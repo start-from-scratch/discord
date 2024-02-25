@@ -14,9 +14,10 @@ with open("id.txt", "r") as f:
   
 start = int(time())          #voir uptime 
 bot = commands.Bot()
+demarrage = 0
 
 
-def create_embed(titre, description, auteur,option):
+def create_embed(titre, description, auteur):
     embed = discord.Embed(title=titre, description=description, color=discord.Color.random())
     #embed.add_field(name="Champ 1", value="Valeur 1")
     #embed.set_author(name= auteur)
@@ -26,7 +27,9 @@ def create_embed(titre, description, auteur,option):
 
 @bot.event
 async def on_ready() -> None:
-    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
+    if demarrage = 0 :
+      await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
+      demarrage = 1
 
 @bot.event
 async def on_message_delete(message):
@@ -66,7 +69,7 @@ async def infos(ctx):
     name = "ping",
     description = "Avoir le ping du bot" 
 )
-async def status(ctx):
+async def ping(ctx):
     embed = create_embed("Ping", f"{bot.user.mention} ping is {int(bot.latency * 1000)} ms", ctx.author.name)
     await ctx.respond(embed=embed)
 
