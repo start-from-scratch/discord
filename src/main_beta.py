@@ -3,6 +3,7 @@ from discord import application_command, Option, Embed, Color
 from discord.ext import commands
 from logs import logger
 from time import time
+from datetime import datetime
 
 with open("token.txt", "r") as f:
   token = f.read()
@@ -13,6 +14,7 @@ with open("id.txt", "r") as f:
   f.close()
   
 start = int(time())          #voir uptime 
+start_date = datetime.fromtimestamp(start)
 bot = commands.Bot()
 running = False
 
@@ -65,7 +67,7 @@ async def say(
     description = "Avoir des Informations sur le bot" 
 )
 async def infos(ctx):
-    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
+    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> le : {start_date} \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
     await ctx.respond(embed=embed)
 
 #Commande ping
@@ -96,6 +98,16 @@ async def embed(ctx,
   description: Option(str),
 ):
   embed = create_embed(titre, description, ctx.author.name,0x093156)
+  await ctx.respond(embed=embed)
+
+
+#Commande serveur
+@bot.slash_command(
+    name= "serveur",
+    description="Avoir des informations sur le serveur" 
+)
+async def embed(ctx):
+  embed = create_embed(titre, description, ctx.author.name,0x053156)
   await ctx.respond(embed=embed)
 
 
