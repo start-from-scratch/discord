@@ -28,6 +28,7 @@ async def on_ready() -> None:
   global demarrage
   if demarrage == 0 :
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
+    demarrage = 1
 
 #Ghost Ping
 @bot.event
