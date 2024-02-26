@@ -25,6 +25,7 @@ def create_embed(titre, description, auteur, couleur):
 #Demarrage du bot
 @bot.event
 async def on_ready() -> None:
+  global running
   if not running:
     running = True
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)")
