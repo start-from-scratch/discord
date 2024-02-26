@@ -1,3 +1,4 @@
+# Pixelbot
 ## Fonctionnement
 Vous devez tout d'abord préparer le robot.
 ```bash
