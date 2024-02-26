@@ -14,7 +14,7 @@ with open("id.txt", "r") as f:
   
 start = int(time())          #voir uptime 
 bot = commands.Bot()
-demarrage = 0
+running = False
 
 #Embed createur
 def create_embed(titre, description, auteur, couleur):
@@ -25,10 +25,9 @@ def create_embed(titre, description, auteur, couleur):
 #Demarrage du bot
 @bot.event
 async def on_ready() -> None:
-  global demarrage
-  if demarrage == 0 :
-    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
-    demarrage = 1
+  if not running:
+    running = True
+    await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)")
 
 #Ghost Ping
 @bot.event
