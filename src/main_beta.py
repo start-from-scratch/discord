@@ -107,7 +107,7 @@ async def embed(ctx,
     description="Avoir des informations sur le serveur" 
 )
 async def embed(ctx):
-  embed = create_embed("Infos serveur", f"Crée le {ctx.guild.created_at} \n Nombre de Membres {ctx.guild.member_count}", ctx.author.name,0x1DB747)
+  embed = create_embed("Infos serveur", f"Crée le {datetime.fromtimestamp(ctx.guild.created_at.timestamp())} \n Nombre de Membres: {ctx.guild.member_count} \n Nombre de salon textuels: {len(ctx.guild.text_channels)}, Nombre de salon vocaux: {len(ctx.guild.voice_channels)} \n Niveau de Boost:{guild_object.premium_subscription_count} | Booster:{guild_object.premium_subscribers} \n Roles: {ctx.guild.roles}", ctx.author.name,0x1DB747)
   await ctx.respond(embed=embed)
 
 
