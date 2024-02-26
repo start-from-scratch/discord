@@ -67,7 +67,7 @@ async def say(
     description = "Avoir des Informations sur le bot" 
 )
 async def infos(ctx):
-    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> le : {start_date} \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
+    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> | Le : {start_date} \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
     await ctx.respond(embed=embed)
 
 #Commande ping
@@ -107,7 +107,7 @@ async def embed(ctx,
     description="Avoir des informations sur le serveur" 
 )
 async def embed(ctx):
-  embed = create_embed(titre, description, ctx.author.name,0x053156)
+  embed = create_embed("Infos serveur", f"Crée le {ctx.guild.created_at} \n Nombre de Membres {ctx.guild.member_count}", ctx.author.name,0x1DB747)
   await ctx.respond(embed=embed)
 
 
