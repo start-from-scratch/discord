@@ -14,9 +14,10 @@ echo "id du salon ou doit etre envoyer le msg de demarrage" > id.txt
 
 Pour faire fonctionner le robot sur une courte durée :
 ```bash
-apt-get install -y python3 python3-pip
+apt-get install -y python3 python3-pip python3-venv
 
-pip install -r requirements.txt
+python3 -m venv venv
+python3 -m pip install -r requirements.txt
 python3 src/main.py
 ```
 
