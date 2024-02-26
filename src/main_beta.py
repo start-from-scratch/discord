@@ -45,6 +45,16 @@ async def on_message_delete(message):
                   embed.add_field(name="Salon:", value=f"ID: {message.channel.id} \n Nom: <#{message.channel.id}>", inline = False)
                   await channel.send(embed=embed) 
 
+# Detect everyone
+@bot.event
+async def on_message_delete(message):
+  if "@everyone" in message.content:
+    channel = bot.get_channel(message.channel.id)
+    embed = create_embed("Everyone","Un `everyone` viens d'etre supprimer", bot.user.name, discord.Color.random())
+    embed.add_field(name="Auteur:", value= message.author.mention, inline = True)
+    embed.add_field(name="Salon:", value=f"ID: {message.channel.id} \n Nom: <#{message.channel.id}>", inline = True)
+    await channel.send(embed=embed) 
+
 #Commande Say                           
 @bot.slash_command(
   name = "say",
