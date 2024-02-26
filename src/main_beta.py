@@ -14,19 +14,19 @@ with open("id.txt", "r") as f:
   
 start = int(time())          #voir uptime 
 bot = commands.Bot()
+demarrage = 0
 
 #Embed createur
 def create_embed(titre, description, auteur, couleur):
     embed = discord.Embed(title=titre, description=description, color=couleur)
-    #embed.add_field(name="Champ 1", value="Valeur 1")
-    #embed.set_author(name= auteur)
-    #embed.set_thumbnail(url=auteur_url)
     embed.set_footer(text=f"Informations demandées par : {auteur}")
     return embed
 
 #Demarrage du bot
 @bot.event
 async def on_ready() -> None:
+  global demarrage
+  if demarrage == 0 :
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle: (Version Beta)") #envoie un msg dans le salon id au demarrage du bot
 
 #Ghost Ping
@@ -44,16 +44,6 @@ async def on_message_delete(message):
                   embed.add_field(name="Mention:", value=user.mention, inline = True)
                   embed.add_field(name="Salon:", value=f"ID: {message.channel.id} \n Nom: <#{message.channel.id}>", inline = False)
                   await channel.send(embed=embed) 
-
-# Detect everyone
-@bot.event
-async def on_message_delete(message):
-  if "@everyone" in message.content:
-    channel = bot.get_channel(message.channel.id)
-    embed = create_embed("Everyone","Un `everyone` viens d'etre supprimer", bot.user.name, discord.Color.random())
-    embed.add_field(name="Auteur:", value= message.author.mention, inline = True)
-    embed.add_field(name="Salon:", value=f"ID: {message.channel.id} \n Nom: <#{message.channel.id}>", inline = True)
-    await channel.send(embed=embed) 
 
 #Commande Say                           
 @bot.slash_command(
