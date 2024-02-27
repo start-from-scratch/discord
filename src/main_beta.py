@@ -51,7 +51,7 @@ async def on_message_delete(ctx: Message) -> None:
 )
 @commands.has_permissions(administrator = True)
 async def say(
-  ctx: Message, 
+  ctx: application_command(), 
   message: Option(str)
 ) -> None:
   await ctx.delete()
@@ -61,7 +61,7 @@ async def say(
     name = "infos",
     description = "Avoir des Informations sur le bot" 
 )
-async def infos(ctx):
+async def infos(ctx: application_command()):
     embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> | Le : {start_date} \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
     await ctx.respond(embed=embed)
 
@@ -69,7 +69,7 @@ async def infos(ctx):
     name = "ping",
     description = "Avoir le ping du bot" 
 )
-async def ping(ctx: Message) -> None:
+async def ping(ctx: application_command()) -> None:
     embed = create_embed("Ping", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms", ctx.author.name, 0xFFA900)
     await ctx.respond(embed=embed)
 
@@ -77,7 +77,7 @@ async def ping(ctx: Message) -> None:
     name = "help",
     description = "Liste des commandes disponibles" 
 )
-async def help(ctx: Message) -> None:
+async def help(ctx: application_command()) -> None:
     embed = create_embed("Help", f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only) \n `/embed` - Crée un embed", ctx.author.name, 0x200B9C)
     await ctx.respond(embed=embed)
 
@@ -86,7 +86,7 @@ async def help(ctx: Message) -> None:
     description="Crée un embed" 
 )
 async def embed(
-  ctx: Message, 
+  ctx: application_command(), 
   titre: Option(str), 
   description: Option(str),
 ) -> None:
@@ -97,7 +97,7 @@ async def embed(
   name= "serveur",
   description="Avoir des informations sur le serveur" 
 )
-async def serveur(ctx: Message) -> None:
+async def serveur(ctx: application_command()) -> None:
   embed = create_embed("Infos serveur", f"Crée le {datetime.fromtimestamp(ctx.guild.created_at.timestamp())} \n Nombre de Membres: {ctx.guild.member_count} \n Nombre de salon textuels: {len(ctx.guild.text_channels)}, Nombre de salon vocaux: {len(ctx.guild.voice_channels)} \n Niveau de Boost:{guild_object.premium_subscription_count} | Booster:{guild_object.premium_subscribers} \n Roles: {ctx.guild.roles}", ctx.author.name,0x1DB747)
   await ctx.respond(embed=embed)
 
