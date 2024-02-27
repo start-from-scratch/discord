@@ -8,8 +8,11 @@ apt-get install -y git
 git clone https://github.com/start-from-scratch/pixelbot
 
 cd pixelbot
-echo "votre_token" > token.txt
-echo "id du salon ou doit etre envoyer le msg de demarrage" > id.txt
+```
+
+Vous devez avant de le mettre en route remplir les informations manquantes dans `config.json` en utilisant par exemple :
+```bash
+echo '{ "status_channel_id": [ <ids> ] , "token": <token> }' > config.json
 ```
 
 Pour faire fonctionner le robot sur une courte durée :

@@ -1,21 +1,17 @@
 from discord import application_command, Option
 from discord.ext import commands
-from logs import logger
+from logger import logger
 from time import time
+from json import load as json_load
 
-with open("token.txt", "r") as f:
-  token = f.read()
-  f.close()
-
-with open("id.txt", "r") as f:
-  id = int(f.read())
-  f.close()
+config = json_load(open("config.json", "r"))
   
-start = int(time())          #voir uptime 
+start = int(time())
 bot = commands.Bot()
 
 @bot.event
 async def on_ready() -> None:
+    logger.info(f"Logged in as {bot.user.name}.")
     await bot.get_channel(id).send(f"Bot {bot.user.mention} demarré :green_circle:") #envoie un msg dans le salon id au demarrage du bot
 
 @bot.event
@@ -61,4 +57,4 @@ async def help(ctx):
     await ctx.respond(f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only)")
 
 
-bot.run(token)
+bot.run(config["token"])
