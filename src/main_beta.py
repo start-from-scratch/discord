@@ -1,20 +1,27 @@
-from discord import application_command, Option, Embed, Colour, Activity, ActivityType, Intents, Message
-from discord.ext import commands
+from discord import application_command, Option, Embed, Colour, Activity, ActivityType, Intents, Message, Game
+from discord.ext import commands, tasks
 from logger import logger
-from datetime import datetime
 from json import load as json_load
 from time import time
+import random 
 
 config = json_load(open("config.json", "r"))
   
 start = int(time())  
 bot = commands.Bot(intents = Intents.all())
 bot.remove_command("help")
+bot.changeable_activites = (f"être sur {len(bot.guilds)} serveurs", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "gérer des statistiques", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un")
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)
     embed.set_footer(text=f"Informations demandées par : {author}")
     return embed
+
+@tasks.loop(minutes=1)
+async def change_activity():
+    await bot.wait_until_ready()
+    await bot.change_presence( activity=Game(random.choice(bot.changeable_activites)))
+
 
 @bot.event
 async def on_ready() -> None:
@@ -23,12 +30,7 @@ async def on_ready() -> None:
   for channel_id in config["status_channel_id"]:
     await bot.get_channel(channel_id).send(f"Le bot est connecté en tant que {bot.user.mention} :green_circle: (Version Beta)")
 
-  await bot.change_presence(
-    activity = Activity(
-      type = ActivityType.watching,
-      name = f"{len(bot.guilds)} serveurs"
-    )
-  )
+  change_activity.start()
 
 @bot.event
 async def on_message_delete(ctx: Message) -> None:
