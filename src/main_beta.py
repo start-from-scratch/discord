@@ -8,7 +8,6 @@ from time import time
 config = json_load(open("config.json", "r"))
   
 start = int(time())  
-start_date = datetime.fromtimestamp(start)
 bot = commands.Bot(intents = Intents.all())
 bot.remove_command("help")
 
@@ -64,7 +63,7 @@ async def say(
     description = "Avoir des Informations sur le bot" 
 )
 async def infos(ctx: application_command()):
-    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> | Le : {start_date} \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
+    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> | Le <t:{start}:F> \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
     await ctx.respond(embed=embed)
 
 @bot.slash_command(
@@ -100,8 +99,14 @@ async def embed(
   description="Avoir des informations sur le serveur" 
 )
 async def serveur(ctx: Message) -> None:
-  roles_list = " | ".join((f"<@&{role.id}>" for role in ctx.guild.roles))
-  embed = create_embed(f"Infos du serveur {ctx.guild.name}", f"Crée le {ctx.guild.created_at} \n Nombre de Membres: {ctx.guild.member_count} \n Proprietaire : {ctx.guild.owner} \n Nombre de salon textuels: {len(ctx.guild.text_channels)}, Nombre de salon vocaux: {len(ctx.guild.voice_channels)}, Nombre de Roles: {len(ctx.guild.roles)} \n Roles: {roles_list}", ctx.author.name,0x1DB747)
+  roles_list = " | ".join((f"<@&{role.id}>" for role in list(reversed(ctx.guild.roles))[:35]))
+  if len(ctx.guild.roles) >= 35:
+     roles_list += " **et plus**"
+  embed = create_embed(ctx.guild.name, f"Information sur le serveur {ctx.guild.name} (`{ctx.guild.id}`)", ctx.author.name, 0x1DB747)
+  embed.add_field(name="Création du serveur:", value=f"<t:{int(ctx.guild.created_at.timestamp())}:F>", inline = True)
+  embed.add_field(name="Proprietaire:", value=f"{ctx.guild.owner.mention} (`{ctx.guild.owner.id}`)", inline = True)
+  embed.add_field(name=f"{len(ctx.guild.roles)} roles:", value=roles_list, inline = False)
+  embed.add_field(name="Statistiques:",value=f"Nombre de membres: {ctx.guild.member_count} \n Nombre de salons textuels: {len(ctx.guild.text_channels)} \n Nombre de salons vocaux: {len(ctx.guild.voice_channels)}", inline = False)
   await ctx.respond(embed=embed)
 
 bot.run(config["token"])
