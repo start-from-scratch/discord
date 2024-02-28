@@ -10,7 +10,7 @@ config = json_load(open("config.json", "r"))
 start = int(time())  
 bot = commands.Bot(intents = Intents.all())
 bot.remove_command("help")
-bot.changeable_activites = (f"être sur {len(bot.guilds)} serveurs", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "gérer des statistiques", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un")
+
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)
@@ -19,6 +19,7 @@ def create_embed(title: str, description: str, author: str, color: Colour):
 
 @tasks.loop(minutes=1)
 async def change_activity():
+    bot.changeable_activites = (f"être sur {len(bot.guilds)} serveurs", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "gérer des statistiques", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un")
     await bot.wait_until_ready()
     await bot.change_presence( activity=Game(random.choice(bot.changeable_activites)))
 
