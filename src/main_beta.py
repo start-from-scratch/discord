@@ -4,12 +4,13 @@ from logger import logger
 from json import load as json_load
 from time import time
 import random 
+import extender 
 
 config = json_load(open("config.json", "r"))
 start = int(time())  
 bot = commands.Bot(intents = Intents.all())
 bot.remove_command("help")
-
+extender.setup(bot)
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)
@@ -18,48 +19,19 @@ def create_embed(title: str, description: str, author: str, color: Colour):
 
 @tasks.loop(minutes=10)
 async def change_activity():
-    bot.changeable_activites = (f"être sur {len(bot.guilds)} serveurs", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "gérer des statistiques", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un")
+    bot.changeable_activites = [f"être sur {len(bot.guilds)} serveurs", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "gérer des statistiques", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un"]
     await bot.wait_until_ready()
-    await bot.change_presence( activity=Game(random.choice(bot.changeable_activites)))
-
+    await bot.change_presence( activity=Game(random.choice(bot.changeable_activites))) 
 
 @bot.event
 async def on_ready() -> None:
   logger.info(f"Logged in as {bot.user.name}.")
 
-  for channel_id in config["status_channel_id"]:
+  for channel_id in config["status_channel_ids"]:
     await bot.get_channel(channel_id).send(f"Le bot est connecté en tant que {bot.user.mention} :green_circle: (Version Beta)")
 
   change_activity.start()
 
-@bot.event
-async def on_message_delete(ctx: Message) -> None:
-  if len(ctx.mentions) == 0: return
-  if True in [
-    ctx.mentions[0] == ctx.author and len(ctx.mentions) == 1, 
-    ctx.author.bot,
-    ctx.mentions[0].bot and len(ctx.mentions) == 1,
-    ctx.author.has_permissions(administrator = True)
-  ]: return
-  
-  embed = Embed(title = "Ghost ping", timestamp = ctx.created_at, colour = Colour.random())
-  embed.add_field(name = "Auteur" , value = ctx.author.mention)
-  embed.add_field(name = "Message", value = ctx.content)
-  embed.add_field(name="Salon:", value=f"ID: {ctx.channel.id} \n Nom: <#{ctx.channel.id}>", inline = False)
-  await ctx.channel.send(embed = embed)
-
-@bot.event
-async def on_message_delete(ctx: Message) -> None:
-    if ctx.mention_everyone == True:
-        if not ctx.author.guild_permissions.administrator:
-            embed = Embed(title="Everyone | Here detecté", timestamp=ctx.created_at, colour=Colour.random())
-            embed.add_field(name="Auteur", value=ctx.author.mention)
-            embed.add_field(name="Message", value=ctx.content)
-            embed.add_field(name="Salon:", value=f"ID: {ctx.channel.id} \n Nom: <#{ctx.channel.id}>", inline=False)
-            await ctx.channel.send(embed=embed)
-
-
-  
 @bot.slash_command(
   name = "say",
   description = "Fais dire quelque chose au bot."

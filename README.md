@@ -21,7 +21,7 @@ apt-get install -y python3 python3-pip python3-venv
 
 python3 -m venv venv
 python3 -m pip install -r requirements.txt
-python3 src/main.py
+python3 -B src/main.py
 ```
 
 Pour faire fonctionner le robot sur une longue durée:
