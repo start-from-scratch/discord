@@ -47,7 +47,11 @@ class Extender(commands.Cog):
                 self.bot.load_extension(self.extensions[-1])
                 logger.info(f'Loaded "{self.extensions[-1]}".')
 
-    @commands.slash_command(
+    @commands.group(name = "extensions")
+    async def extensions():
+        pass
+    
+    @extensions.command(
         name = "reload",
         description = "reload all extensions"
     )
