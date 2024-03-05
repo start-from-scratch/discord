@@ -27,7 +27,7 @@ async def change_activity():
 async def on_ready() -> None:
   logger.info(f"Logged in as {bot.user.name}.")
 
-  for channel_id in config["status_channel_ids"]:
+  for channel_id in config["status_channels_ids"]:
     await bot.get_channel(channel_id).send(f"Le bot est connecté en tant que {bot.user.mention} :green_circle: (Version Beta)")
 
   change_activity.start()

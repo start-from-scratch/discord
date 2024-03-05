@@ -1,18 +1,54 @@
-from os import listdir
-from os.path import dirname, isdir
+from os import listdir, PathLike, chmod, access, W_OK, remove
+from os.path import isdir, isfile, exists
+from rich.console import Console
+from shutil import rmtree
+from stat import S_IWUSR
 
-def tree(directory: str = dirname(__file__)) -> list:
+console = Console()
+status = console.status("")
+
+def onerror(func, path, exc_info):
+    if not access(path, W_OK):
+        chmod(path, S_IWUSR)
+        func(path)
+    else:
+        raise
+
+def rm(path: PathLike) -> list:
+    if not exists(path):
+        return
+    
+    status.update(f'[bold green]Removing "{path}"...')
+    status.start()
+
+    if isdir(path):
+        rmtree(path, onerror = onerror)
+    elif isfile(path):
+        remove(path)
+
+    console.log(f'[green]Removed "{path}".[/green]')
+    status.stop()
+
+def tree(directory: PathLike) -> list:
     files = []
+    directories = []
+
+    status.update(f'[bold green]Listing directory "{directory}"...')
+    status.start()
 
     for file in listdir(directory):
-        path = f"{directory}/{file}"
+        file = f"{directory}/{file}"
+        console.log(f'[green]Found "{file}".[/green]')
 
-        if path.endswith("__pycache__"): pass
-
-        elif isdir(path):
-            files += tree(path)
+        if isdir(file):
+            directories.append(file)
 
         else:
-            files.append(path)
+            files.append(file)
     
+    status.stop()
+
+    for _directory in directories:
+        files += tree(_directory)
+
     return files
