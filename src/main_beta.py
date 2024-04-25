@@ -5,6 +5,7 @@ from json import load as json_load
 from time import time
 import random 
 import extender 
+from datetime import datetime
 
 config = json_load(open("config.json", "r"))
 start = int(time())  
@@ -65,8 +66,20 @@ async def ping(ctx: application_command()) -> None:
     description = "Liste des commandes disponibles" 
 )
 async def help(ctx: application_command()) -> None:
-    embed = create_embed("Help", f"Commandes Disponible : \n `/ping` - Avoir le ping du bot \n `/infos` - Avoir des Informations sur le bot \n `/help` - Liste des commandes disponibles \n `/say` - Fais dire quelque chose au bot (admin only) \n `/embed` - Crée un embed", ctx.author.name, 0x200B9C)
-    await ctx.respond(embed=embed)
+    embed = Embed( 
+      description = "Liste des commandes disponibles",
+      timestamp = datetime.now()
+    )
+
+    embed.set_author(
+      name = "Help",
+      icon_url = "https://discord.com/assets/69c6f60ff04159c1f157.svg"
+    )
+
+    embed.add_field(
+      name = "Commandes",
+      value = "\n".join([f"`{command.name}` - {command.description}" for command in bot.all_commands.values()])
+    )
 
 @bot.slash_command(
     name= "embed",
