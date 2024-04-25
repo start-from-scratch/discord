@@ -72,8 +72,8 @@ async def help(ctx: application_command()) -> None:
     )
 
     embed.set_author(
-      name = "Help",
-      icon_url = "https://discord.com/assets/69c6f60ff04159c1f157.svg"
+      name = bot.user.display_name,
+      icon_url = bot.user.display_avatar
     )
 
     embed.add_field(
