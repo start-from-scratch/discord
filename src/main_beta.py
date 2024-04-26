@@ -3,7 +3,7 @@ from discord.ext import commands, tasks
 from logger import logger
 from json import load as json_load
 from time import time
-import random 
+from random import *
 import extender 
 from datetime import datetime
 
@@ -28,7 +28,7 @@ async def change_activity():
 async def on_ready() -> None:
   logger.info(f"Logged in as {bot.user.name}.")
 
-  for channel_id in config["status_channels_ids"]:
+  for channel_id in config["status_channel_ids"]:
     await bot.get_channel(channel_id).send(f"Le bot est connecté en tant que {bot.user.mention} :green_circle: (Version Beta)")
 
   change_activity.start()
@@ -62,26 +62,6 @@ async def ping(ctx: application_command()) -> None:
     await ctx.respond(embed=embed)
 
 @bot.slash_command(
-    name = "help",
-    description = "Liste des commandes disponibles" 
-)
-async def help(ctx: application_command()) -> None:
-    embed = Embed( 
-      description = "Liste des commandes disponibles",
-      timestamp = datetime.now()
-    )
-
-    embed.set_author(
-      name = bot.user.display_name,
-      icon_url = bot.user.display_avatar
-    )
-
-    embed.add_field(
-      name = "Commandes",
-      value = "\n".join([f"`{command.name}` - {command.description}" for command in bot.all_commands.values()])
-    )
-
-@bot.slash_command(
     name= "embed",
     description="Crée un embed" 
 )
@@ -107,5 +87,44 @@ async def serveur(ctx: Message) -> None:
   embed.add_field(name=f"{len(ctx.guild.roles)} roles:", value=roles_list, inline = False)
   embed.add_field(name="Statistiques:",value=f"Nombre de membres: {ctx.guild.member_count} \n Nombre de salons textuels: {len(ctx.guild.text_channels)} \n Nombre de salons vocaux: {len(ctx.guild.voice_channels)}", inline = False)
   await ctx.respond(embed=embed)
+
+@bot.slash_command(
+  name= "des",
+  description="faire un lancer de des " 
+)
+async def tiragedes(
+  ctx: application_command(), 
+  valeur1: Option(int, description="Valeur minimale du dé"),
+  valeur2: Option(int, description="Valeur maximale du dé"),
+  tirage: Option(int, description="Nombre de lancers de dés"),
+  ) -> None:
+  if tirage >25 :
+     await ctx.respond("Le nombre de Tirage demandé est trop important. La limite est de 25 tirages.")
+     return
+  embed = create_embed("Lancer de dés", f"Tirage de {tirage} dés compris entre {valeur1} et {valeur2}.", ctx.author.name, 0x1DB747)
+  for x in range(tirage) :
+    embed.add_field(name= f"Tirage n°{x+1}", value=str(randint(valeur1,valeur2)), inline=False)
+  await ctx.respond(embed=embed)
+
+@bot.slash_command(
+    name = "help",
+    description = "Liste des commandes disponibles" 
+)
+async def help(ctx: application_command()) -> None:
+    embed = Embed( 
+      description = "Liste des commandes disponibles",
+      timestamp = datetime.now(),
+    )
+
+    embed.set_author(
+      name = bot.user.display_name,
+      icon_url = bot.user.display_avatar,
+    )
+
+    embed.add_field(
+      name = "Commandes",
+      value = "\n".join([f"`{command.name}` - {command.description}" for command in bot.all_commands.values()]),
+    )
+
 
 bot.run(config["token"])
