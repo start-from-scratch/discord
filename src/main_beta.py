@@ -6,6 +6,7 @@ from time import time
 from random import *
 import extender 
 from datetime import datetime
+import random
 
 config = json_load(open("config.json", "r"))
 start = int(time())  
@@ -110,7 +111,7 @@ async def tiragedes(
     name = "help",
     description = "Liste des commandes disponibles" 
 )
-async def help(ctx: application_command()) -> None:
+async def help(ctx) -> None:
     embed = Embed( 
       description = "Liste des commandes disponibles",
       timestamp = datetime.now(),
@@ -126,5 +127,6 @@ async def help(ctx: application_command()) -> None:
       value = "\n".join([f"`{command.name}` - {command.description}" for command in bot.all_commands.values()]),
     )
 
+    await ctx.respond(embed = embed)
 
 bot.run(config["token"])

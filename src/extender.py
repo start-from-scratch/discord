@@ -47,7 +47,7 @@ class Extender(commands.Cog):
         description = "reload all extensions"
     )
     @commands.is_owner()
-    async def extensions_reload(self, ctx: application_command()) -> None:
+    async def extensions_reload(self, ctx) -> None:
         embed = Embed(timestamp = datetime.now(), title = "Extensions reload")
         old_extensions = "`, `".join(self.extensions)
 
@@ -76,7 +76,7 @@ class Extender(commands.Cog):
         description = "get the list of loaded extensions"
     )
     @commands.is_owner()
-    async def extensions_list(self, ctx: application_command()) -> None:
+    async def extensions_list(self, ctx) -> None:
         embed = Embed(timestamp = datetime.now(), title = "Extensions", description = "`, `".join(self.extensions))
         await ctx.respond(embed = embed)
 
