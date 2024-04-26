@@ -1,4 +1,4 @@
-from logging import getLogger, FileHandler, Formatter, INFO
+from logging import getLogger, FileHandler, Formatter, INFO, DEBUG
 from rich.logging import RichHandler
 from os import makedirs, rename
 from os.path import isdir, isfile
@@ -22,7 +22,7 @@ new.write(f"{time()}\n")
 new.close()
 
 logger = getLogger()
-logger.setLevel(INFO)
+logger.setLevel(DEBUG)
 
 handler = FileHandler(
     filename = file,
@@ -30,8 +30,10 @@ handler = FileHandler(
     encoding = "utf-8"
 )
 handler.setFormatter(Formatter("%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s"))
+handler.setLevel(DEBUG)
 logger.addHandler(handler)
 
 handler = RichHandler()
 handler.setFormatter(Formatter("%(message)s"))
+handler.setLevel(INFO)
 logger.addHandler(handler)
