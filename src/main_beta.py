@@ -90,43 +90,50 @@ async def serveur(ctx: Message) -> None:
   await ctx.respond(embed=embed)
 
 @bot.slash_command(
-  name= "des",
+  name= "dés",
   description="faire un lancer de des " 
 )
 async def tiragedes(
   ctx: application_command(), 
-  valeur1: Option(int, description="Valeur minimale du dé"),
-  valeur2: Option(int, description="Valeur maximale du dé"),
-  tirage: Option(int, description="Nombre de lancers de dés"),
-  ) -> None:
-  if tirage >25 :
-     await ctx.respond("Le nombre de Tirage demandé est trop important. La limite est de 25 tirages.")
-     return
-  embed = create_embed("Lancer de dés", f"Tirage de {tirage} dés compris entre {valeur1} et {valeur2}.", ctx.author.name, 0x1DB747)
-  for x in range(tirage) :
-    embed.add_field(name= f"Tirage n°{x+1}", value=str(randint(valeur1,valeur2)), inline=False)
+  valeur1: Option(int, description="Valeur minimale"),
+  valeur2: Option(int, description="Valeur maximale"),
+  tirage: Option(int, description="Nombre de lancers"),
+) -> None:
+  embed = Embed(
+    title = "Lancer de dés",
+    description = f"Tirage de {tirage} dés compris entre {valeur1} et {valeur2}.",
+    color = Colour.green()
+  )
+
+  for x in range(int(tirage)):
+    embed.add_field(
+      name = f"Tirage n°{x+1}", 
+      value = str(randint(valeur1,valeur2)), 
+      inline=True
+    )
+
   await ctx.respond(embed=embed)
 
 @bot.slash_command(
-    name = "help",
-    description = "Liste des commandes disponibles" 
+  name = "help",
+  description = "Liste des commandes disponibles" 
 )
 async def help(ctx) -> None:
-    embed = Embed( 
-      description = "Liste des commandes disponibles",
-      timestamp = datetime.now(),
-    )
+  embed = Embed( 
+    description = "Liste des commandes disponibles",
+    timestamp = datetime.now(),
+  )
 
-    embed.set_author(
-      name = bot.user.display_name,
-      icon_url = bot.user.display_avatar,
-    )
+  embed.set_author(
+    name = bot.user.display_name,
+    icon_url = bot.user.display_avatar,
+  )
 
-    embed.add_field(
-      name = "Commandes",
-      value = "\n".join([f"`{command.name}` - {command.description}" for command in bot.all_commands.values()]),
-    )
+  embed.add_field(
+    name = "Commandes",
+    value = "\n".join([f"`{command.name}` - {command.description}" for command in bot.all_commands.values()]),
+  )
 
-    await ctx.respond(embed = embed)
+  await ctx.respond(embed = embed)
 
 bot.run(config["token"])
