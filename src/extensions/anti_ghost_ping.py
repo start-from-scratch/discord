@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord import Message, Embed, Colour
 
-class GhostPing(commands.Cog):
+class AntiGhostPing(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
@@ -24,4 +24,4 @@ class GhostPing(commands.Cog):
         await ctx.channel.send(embed = embed)
 
 def setup(bot: commands.Bot) -> None:
-    bot.add_cog(GhostPing(bot))
+    bot.add_cog(AntiGhostPing(bot))
