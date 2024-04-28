@@ -8,6 +8,7 @@ from pygit2 import clone_repository
 from json import load as json_load
 from datetime import datetime
 from time import time
+import __main__
 
 f = open("config.json")
 config = json_load(f)
@@ -18,7 +19,6 @@ logger = getLogger()
 class Extender(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.directory = dirname(__file__) + "/extensions"
         self.extensions = []
         rm("temp")
         self.load()
@@ -31,11 +31,11 @@ class Extender(commands.Cog):
         self.extensions = []
 
     def load(self) -> None:
-        scripts = tree(self.directory)
+        scripts = tree(dirname(__main__.__file__) + "/extensions")
 
         for script in scripts:
             if script.endswith(".py"):
-                self.extensions.append(f"extensions.{script[:-3][len(self.directory) + 1:].replace('/', '.')}")
+                self.extensions.append(script[len(dirname(__main__.__file__)) + 1:][:-3].replace("/", "."))
                 
                 self.bot.load_extension(self.extensions[-1])
                 logger.info(f'Loaded "{self.extensions[-1]}".')
