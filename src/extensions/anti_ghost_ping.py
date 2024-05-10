@@ -7,13 +7,13 @@ class AntiGhostPing(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, ctx: Message) -> None:
-        if len(ctx.mentions) >= 1 and any([
-            ctx.mentions[0] == ctx.author and len(ctx.mentions) == 1,
-            ctx.mentions[0].bot and len(ctx.mentions) == 1
-        ]) or any([
+        if any([
             ctx.author.bot,
             ctx.author.guild_permissions.manage_messages,
             ctx.guild.audit_logs(limit=1,action=AuditLogAction.message_delete)[0].user.guild_permissions.manage_messages
+        ]) or len(ctx.mentions) >= 1 and any([
+            ctx.mentions[0] == ctx.author and len(ctx.mentions) == 1,
+            ctx.mentions[0].bot and len(ctx.mentions) == 1
         ]): return
         
         embed = Embed(title = "Ghost ping", timestamp = ctx.created_at, colour = Colour.random())
