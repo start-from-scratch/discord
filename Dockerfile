@@ -1,10 +1,12 @@
-FROM python:3.8.9
+FROM alpine:latest
 
-COPY . /usr/containers/pixelbot
+COPY . /discord
 
-WORKDIR /usr/containers/pixelbot
+WORKDIR /discord
 
-RUN pip install --no-cache-dir --upgrade pip &&\
-    pip install --no-cache-dir -r requirements.txt
+RUN apk add --no-cache --upgrade python3 py3-pip bash \
+    && pip3 install --no-cache --break-system-packages -r requirements.txt
 
-CMD [ "python3", "-B", "src/main.py" ]
+VOLUME "/discord/extensions/scripts" 
+
+ENTRYPOINT "python3 -B main.py"
