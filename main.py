@@ -1,6 +1,6 @@
 from discord import Option, Embed, Colour, Intents, Message, Game
 from discord.ext import commands, tasks
-from logger import logger
+from logs import logger
 from json import load as json_load
 from time import time
 from random import choice as rchoice
