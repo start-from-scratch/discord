@@ -1,13 +1,18 @@
 #!/bin/bash
-dir=$(dirname $0)
-flags=""
+ROOT=$(dirname $0)
+FLAGS="-j"
 
-if [ ! -d "$dir/archives" ]; then 
-    mkdir "$dir/archives"
+FILE=$(basename $1)
+FILE="$ROOT/${FILE%.*}.log"
+ln -s "$1" "$FILE"
+
+if [ ! -d "$ROOT/archives" ]; then 
+    mkdir "$ROOT/archives"
 fi
 
-if [ -f "$dir/archives/logs.zip" ]; then
-    flags="-u"
+if [ -f "$ROOT/archives/logs.zip" ]; then
+    FLAGS+=" -u"
 fi
 
-zip $flags "$dir/archives/logs.zip" $(find -type f -path "*.log" -not -path "*/latest.log") 
+zip $FLAGS "$ROOT/archives/logs.zip" "$FILE"
+rm $FILE

@@ -1,11 +1,12 @@
 #!/bin/bash
-dir=$(dirname $0)
+ROOT=$(dirname $0)
 
-if [ -f "$dir/latest.log" ]; then
-    file="$dir/$(cat "$dir/latest.log" | head -n 1 | sed 's/\r$//').log"
-    cp "$dir/latest.log" $file
-    $dir/compress.sh
-    rm $file
+if [ -f "$ROOT/latest.log" ]; then
+    TIMESTAMP=$(stat -c "%W" "$ROOT/latest.log")
+    TMPFILE=$(mktemp "/tmp/$TIMESTAMP.XXXXXX")
+    
+    echo $(cat "$ROOT/latest.log") > "$TMPFILE"
+    rm "$ROOT/latest.log"
+
+    $ROOT/compress.sh $TMPFILE
 fi
-
-echo $(date +%s) > "$dir/latest.log"
