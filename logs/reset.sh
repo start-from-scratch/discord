@@ -1,12 +1,11 @@
 #!/bin/bash
 ROOT=$(dirname $0)
+TMPDIR=$(mktemp -d)
 
-if [ -f "$ROOT/latest.log" ]; then
+for FILE in $(find $ROOT -type f -path "*.log"); do
     TIMESTAMP=$(stat -c "%W" "$ROOT/latest.log")
-    TMPFILE=$(mktemp "/tmp/$TIMESTAMP.XXXXXX")
-    
-    echo $(cat "$ROOT/latest.log") > "$TMPFILE"
-    rm "$ROOT/latest.log"
+    mv "$FILE" "$TMPDIR/$TIMESTAMP.log"
+done
 
-    $ROOT/compress.sh $TMPFILE
-fi
+printf "" > "$ROOT/latest.log"
+$ROOT/compress.sh $TMPDIR
