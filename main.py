@@ -4,7 +4,7 @@ from logs import logger
 from json import load as json_load
 from time import time
 from random import choice as rchoice
-import extensions as extensions 
+import extensions
 from datetime import datetime
 
 config = json_load(open("config.json", "r"))

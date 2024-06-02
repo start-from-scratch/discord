@@ -1,16 +1,12 @@
 from discord.ext import commands
 from discord import SlashCommandGroup, Embed
 from os.path import dirname
-from os import replace
+from os import system
 from logging import getLogger
-from pygit2 import clone_repository
 from json import load as json_load
 from datetime import datetime
-from time import time
 
 import __main__
-from .tree import tree
-from .rm import rm
 
 f = open("config.json")
 config = json_load(f)
@@ -21,8 +17,11 @@ logger = getLogger()
 class Extender(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.extensions = []
-        rm("tmp")
+
+        system(f"{dirname(__file__)}/list.sh {dirname(__main__.__file__)}")
+        with open(f"{dirname(__file__)}/scripts/list.txt", "r") as f:
+            self.extensions = f.read().split("\n")[:-1]
+        
         self.load()
 
     def unload(self) -> None:
@@ -33,14 +32,9 @@ class Extender(commands.Cog):
         self.extensions = []
 
     def load(self) -> None:
-        scripts = tree(dirname(__file__) + "/scripts")
-
-        for script in scripts:
-            if script.endswith(".py"):
-                self.extensions.append(script[len(dirname(__main__.__file__)) + 1:][:-3].replace("/", "."))
-                
-                self.bot.load_extension(self.extensions[-1])
-                logger.info(f'Loaded "{self.extensions[-1]}".')
+        for script in self.extensions:
+            self.bot.load_extension(script)
+            logger.info(f'Loaded "{script}".')
 
     extensions = SlashCommandGroup("extensions")
     
@@ -55,15 +49,9 @@ class Extender(commands.Cog):
 
         self.unload()
 
-        if config.get("repository"):
-            embed.description = f'Got extensions from [this repository]({config.get("repository") or "#"})'
-
-            if len(config["repository"]) >= 1:
-                directory = f"tmp/{time()}"
-
-                clone_repository(config["repository"], directory)
-                rm(dirname(__file__) + "/scripts")
-                replace(f"{directory}/extensions/scripts", dirname(__file__) + "/scripts")
+        system(f"{dirname(__file__)}/update.sh {dirname(__main__.__file__)}/config.json")
+        with open(f"{dirname(__file__)}/scripts/list.txt", "r") as f:
+            self.extensions = f.read().split("\n")[:-1]
 
         self.load()
         extensions = "`, `".join(self.extensions)

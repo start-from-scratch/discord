@@ -6,8 +6,7 @@ WORKDIR /discord
 
 RUN apk add --no-cache --upgrade python3 py3-pip bash zip \
     && pip3 install --no-cache --break-system-packages -r requirements.txt \
-    && chmod +x $(find -type f -path "*.sh") \
-    && mkdir /discord/logs/archives
+    && find -type f -path "*.sh" | xargs chmod +x
 
 VOLUME "/discord/logs/archives"
 

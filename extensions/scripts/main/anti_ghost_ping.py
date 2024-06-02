@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import Message, Embed, Colour
+from discord import Message, Embed, Colour, AuditLogAction
 
 class AntiGhostPing(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -14,7 +14,7 @@ class AntiGhostPing(commands.Cog):
         elif any([
             ctx.author.bot,
             ctx.author.guild_permissions.manage_messages,
-            ctx.guild.audit_logs(limit=1,action=AuditLogAction.message_delete)[0].user.guild_permissions.manage_messages
+            ctx.guild.audit_logs(limit=1,action=AuditLogAction.message_delete)[0].user.id != ctx.author.id
         ]): return
         
         embed = Embed(title = "Ghost ping", timestamp = ctx.created_at, colour = Colour.random())

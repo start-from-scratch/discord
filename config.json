@@ -1,5 +1,9 @@
 {
     "status_channel_ids": [],
-    "repository": "https://github.com/start-from-scratch/pixelbot",
+    "extensions": [{
+        "name": "main",
+        "repository": "https://github.com/start-from-scratch/pixelbot",
+        "scripts": "/extensions/scripts"
+    }],
     "token": ""
 }
