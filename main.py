@@ -4,14 +4,16 @@ from utils.logging import logger
 from json import load as json_load
 from time import time
 from random import choice as rchoice
-import extensions
 from datetime import datetime
+from cogs import loader as cogs
 
 config = json_load(open("config.json", "r"))
 start = int(time())  
+
 bot = commands.Bot(intents = Intents.all())
+cogs.setup(bot)
+
 bot.remove_command("help")
-extensions.setup(bot)
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)
