@@ -2,7 +2,7 @@
     "status_channel_ids": [],
     "repository": {
         "url": "https://github.com/start-from-scratch/pixelbot",
-        "cogs": "/extensions"
+        "cogs": "/cogs"
     },
     "token": ""
 }
