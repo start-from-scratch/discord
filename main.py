@@ -10,6 +10,7 @@ from cogs import loader as cogs
 
 config = json_load(open("config.json", "r"))
 start = int(time())
+version = "0.0.0"
 
 bot = commands.Bot(intents = Intents.all())
 cogs.setup(bot)
@@ -23,9 +24,9 @@ def create_embed(title: str, description: str, author: str, color: Colour):
 
 @tasks.loop(minutes=10)
 async def change_activity():
-    bot.changeable_activites = [f"être sur {len(bot.guilds)} serveurs", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "gérer des statistiques", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un"]
+    bot.changeable_activites = [f"être sur {len(bot.guilds)} serveurs", f"regarde la version {version}", "regarder Start from Scratch", "Apex Legends", "Minecraft", "regarder netflix avec Katsuki", "regarder loyds44", "coder", "discuter avec des utilisateurs", "écouter de la musique", "aider les utilisateurs", "analyser des données", "apprendre de nouvelles choses", "aller à la salle", "se rappeler de scratch on scratch", "écouter de la hardbass", "quelquechose avec quelqu'un"]
     await bot.wait_until_ready()
-    await bot.change_presence( activity=Game(rchoice(bot.changeable_activites))) 
+    await bot.change_presence(activity=Game(rchoice(bot.changeable_activites))) 
 
 @bot.event
 async def on_ready() -> None:
@@ -47,10 +48,10 @@ async def say(ctx, message: Option(str)) -> None:
 
 @bot.slash_command(
   name = "dm",
-  description = "Envoie un DM a un utilisateur. (admin only)"
+  description = "Envoie un DM à un utilisateur. (admin only)"
 )
 @commands.has_permissions(administrator = True)
-async def dm(ctx, member: Option(discord.Member, description="Mentionne le membre"), message: Option(str)) -> None:
+async def dm(ctx, member: Option(discord.Member, description="Mentionne le membre"), message: Option(str, description="Message a envoyer en privé")) -> None:
   await ctx.delete()
   embed= Embed(title="Nouveau message", description=message,colour=0x093156)
   embed.set_footer(text=f"Message envoyé a partir du serveur {ctx.guild.name}")
@@ -61,7 +62,10 @@ async def dm(ctx, member: Option(discord.Member, description="Mentionne le membr
     description = "Avoir des informations sur le bot" 
 )
 async def infos(ctx):
-    embed = create_embed("Infos", f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé <t:{start}:R> | Le <t:{start}:F> \n Actuellement dans {len(bot.guilds)} serveur(s)", ctx.author.name, 0x008FFF)
+    embed = Embed(title="Infos",description=f"Information sur le bot {bot.user.mention}", colour= 0x008FFF)
+    embed.add_field(name="Données", value=f"Le ping du bot {bot.user.mention} est de {int(bot.latency * 1000)}ms \n A été lancé le <t:{start}:F> (<t:{start}:R>)", inline=False)
+    embed.add_field(name="Serveurs", value=f"Actuellement dans {len(bot.guilds)} serveur(s) \n Regarde {sum(guild.member_count for guild in bot.guilds)} membre(s)", inline=False)
+    embed.set_footer(text=f"Crée par Loyds44 & Switchcodeur , Version {version}")  #ligne a changé si pas les memes personnes qui ont fait le bots
     await ctx.respond(embed=embed)
 
 @bot.slash_command(
@@ -99,15 +103,16 @@ async def tiragedes(
         description=f"Tirage de {tirage} dés compris entre {valeur1} et {valeur2}.",
         color=Colour.green()
     )
-
-    for x in range(int(tirage)):
-        embed.add_field(
-            name=f"Tirage n°{x+1}", 
-            value=str(randint(valeur1, valeur2)), 
-            inline=True
-        )
-
-    await ctx.respond(embed=embed)
+    if valeur1 < valeur2 : 
+      for x in range(int(tirage)):
+          embed.add_field(
+              name=f"Tirage n°{x+1}", 
+              value=str(randint(valeur1, valeur2)), 
+              inline=True
+          )
+      await ctx.respond(embed=embed)
+    else: 
+      await ctx.respond(f"La valeur 1 ({valeur1}) ne peut pas etre inferieur à la valeur 2 ({valeur2})")
 
 @bot.slash_command(
   name = "help",
@@ -228,6 +233,7 @@ async def role(ctx, role: Option(discord.Role, description="Mentionne le role"))
   description = "Avoir des informations sur un emoji" 
 )
 async def emoji(ctx, emoji: Option(discord.Emoji, description="Mentionne l'emoji")) -> None:
+
   embed = create_embed(None, f"Informations sur l'emoji '{emoji.name}' (`{emoji.id}`)", ctx.author.name, 0xE47703)
   embed.set_author(name=emoji.name, icon_url=emoji.url)
   embed.add_field(name="Création de l'emoji:", value=f"<t:{int(emoji.created_at.timestamp())}:F>", inline=True)
@@ -238,7 +244,7 @@ async def emoji(ctx, emoji: Option(discord.Emoji, description="Mentionne l'emoji
 
 @bot.slash_command(
   name = "liste_serveurs",
-  description = "Avoir la liste des serveurs du bot" 
+  description = "Avoir la liste des serveurs du bot. (dev only)" 
 )
 async def liste_serveurs(ctx) -> None:
   if ctx.author.id in config["dev_id"] :
@@ -247,6 +253,8 @@ async def liste_serveurs(ctx) -> None:
     embed.add_field(name="ID :", value= " \n ".join([str(guild.id) for guild in bot.guilds]), inline=True)
     embed.add_field(name="Membres :", value= " \n ".join([str(guild.member_count) for guild in bot.guilds]), inline=True)
     await ctx.respond(embed=embed)
+  else : 
+    await ctx.respond("Vous n'etes pas un developpeur du bot, vous ne pouvez donc pas effectuer cette commande")
 
 
 bot.run(config["token"])
