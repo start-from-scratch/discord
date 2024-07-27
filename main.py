@@ -6,16 +6,16 @@ from json import load as json_load
 from time import time
 from random import choice as rchoice, randint
 from datetime import datetime
-from cogs import loader as cogs
+from cogs.loader import Loader
 
 config = json_load(open("config.json", "r"))
 start = int(time())
 version = "0.0.0"
 
-bot = commands.Bot(intents = Intents.all())
-cogs.setup(bot)
-
+intents: Intents = Intents.all()
+bot: commands.Bot = commands.Bot(intents = intents)
 bot.remove_command("help")
+bot.add_cog(Loader(bot, config))
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)

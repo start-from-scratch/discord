@@ -1,30 +1,29 @@
 from discord.ext import commands
-from discord import SlashCommandGroup, Embed, Option
-from os.path import dirname, realpath, normpath
+from discord import SlashCommandGroup, Embed, ApplicationContext
+from os.path import dirname, realpath, normpath, basename, exists
+from os import remove
 from shutil import move
-from tempfile import mkdtemp
 from logging import getLogger
-from json import load as load_json
 from datetime import datetime
-from pygit2 import clone_repository
 
-from utils.tree import tree
+from utils.disk import tree
+from utils.git import clone
 import __main__
 
 
 root = dirname(realpath(__main__.__file__))
 logger = getLogger()
-
-with open(f"{root}/config.json", "r") as f:
-    config = load_json(f)
     
 
 class Loader(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
-        self.bot = bot
-        self.modules = []
+    def __init__(self, bot: commands.Bot, config: dict) -> None:
+        self.bot: commands.Bot = bot
+        self.modules: list[str] = []
+        self.config: dict = config
     
         self.load()
+        
+    group = SlashCommandGroup("modules")
 
     def unload(self) -> None:
         for extension in self.modules:
@@ -49,29 +48,27 @@ class Loader(commands.Cog):
             logger.info('Loaded "%s".', module)
 
         self.modules = modules
-
-    modules = SlashCommandGroup("modules")
     
-    @modules.command(
+    @group.command(
         name = "reload",
         description = "reload all modules"
     )
     @commands.is_owner()
-    async def modules_reload(self, ctx) -> None:
+    async def modules_reload(self, ctx: ApplicationContext) -> None:
         embed = Embed(timestamp = datetime.now(), title = "modules reload")
         old_modules = "`, `".join(self.modules)
 
         self.unload()
 
-        tmpdir = mkdtemp()
-        repo = clone_repository(config["repository"]["url"], tmpdir)
-        print(tree(tmpdir))
-        for module in tree(tmpdir + config["repository"]["cogs"]):
-            print(module, realpath(dirname(__file__)))
-            if not module == realpath(dirname(__file__)):
-                move(module, dirname(__file__))
+        tmpdir = clone(self.config["repository"]["url"])
+        remove(tmpdir + self.config["repository"]["cogs"] + f"/{basename(__file__)}")
 
-        repo.free()
+        for module in tree(tmpdir + self.config["repository"]["cogs"]):
+            if not module == realpath(dirname(__file__)):
+                if exists(f"{root}/{self.config["repository"]["cogs"]}/{basename(module)}"):
+                    remove(f"{root}/{self.config["repository"]["cogs"]}/{basename(module)}")
+                    
+                move(module, f"{root}/{self.config["repository"]["cogs"]}")
 
         self.load()
         modules = "`, `".join(self.modules)
@@ -81,7 +78,7 @@ class Loader(commands.Cog):
         
         await ctx.respond(embed = embed)
 
-    @modules.command(
+    @group.command(
         name = "list",
         description = "get the list of loaded modules"
     )
@@ -90,7 +87,3 @@ class Loader(commands.Cog):
         description = "`, `".join(self.modules) if len(self.modules) > 1 else f"`{self.modules[0]}`"
         embed = Embed(timestamp = datetime.now(), title = "modules", description = description)
         await ctx.respond(embed = embed)
-
-
-def setup(bot: commands.Bot) -> None:
-    bot.add_cog(Loader(bot))
