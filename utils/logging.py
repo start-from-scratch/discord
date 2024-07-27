@@ -35,6 +35,7 @@ richHandler = RichHandler()
 richHandler.setFormatter(Formatter("%(message)s"))
 logger.addHandler(richHandler)
 
+
 def compress() -> None:
     if not isfile(f"{dir}/latest.log"):
         return

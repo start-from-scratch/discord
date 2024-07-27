@@ -1,12 +1,13 @@
 import discord
 from discord import Option, Embed, Colour, Intents, Message, Game
 from discord.ext import commands, tasks
-from utils.logging import logger
 from json import load as json_load
 from time import time
 from random import choice as rchoice, randint
 from datetime import datetime
-from cogs.loader import Loader
+
+from utils import logger
+import loader
 
 config = json_load(open("config.json", "r"))
 start = int(time())
@@ -15,7 +16,7 @@ version = "0.0.0"
 intents: Intents = Intents.all()
 bot: commands.Bot = commands.Bot(intents = intents)
 bot.remove_command("help")
-bot.add_cog(Loader(bot, config))
+loader.load(bot, "cogs", config["repository"])
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)
