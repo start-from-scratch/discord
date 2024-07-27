@@ -1,8 +1,7 @@
 from discord.ext import commands
 from discord import SlashCommandGroup, Embed, ApplicationContext
-from os.path import dirname, realpath, normpath, basename, exists
+from os.path import dirname, realpath, normpath, basename, join
 from os import remove
-from shutil import move
 from logging import getLogger
 from datetime import datetime
 
@@ -61,14 +60,16 @@ class Loader(commands.Cog):
         self.unload()
 
         tmpdir = clone(self.config["repository"]["url"])
-        remove(tmpdir + self.config["repository"]["cogs"] + f"/{basename(__file__)}")
+        
+        for source in tree(join(str(tmpdir), self.config["repository"]["cogs"])):
+            destination: str = join(root, self.config["repository"]["cogs"], basename(source))
 
-        for module in tree(tmpdir + self.config["repository"]["cogs"]):
-            if not module == realpath(dirname(__file__)):
-                if exists(f"{root}/{self.config["repository"]["cogs"]}/{basename(module)}"):
-                    remove(f"{root}/{self.config["repository"]["cogs"]}/{basename(module)}")
-                    
-                move(module, f"{root}/{self.config["repository"]["cogs"]}")
+            if basename(source) != basename(__file__):
+                with open(source, "r") as f:
+                    content: str = f.read()
+
+                with open(destination, "w") as f:
+                    f.write(content)
 
         self.load()
         modules = "`, `".join(self.modules)
