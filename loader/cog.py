@@ -6,10 +6,10 @@ from .loader import Loader
     
 
 class LoaderCog(commands.Cog):
-    def __init__(self, bot: commands.Bot, directory: str, repository: str | None = None) -> None:
+    def __init__(self, bot: commands.Bot, directory: str, repository: str | None = None, **kwargs) -> None:
         self.bot: commands.Bot = bot
 
-        self.loader: Loader = Loader(bot, directory, repository)
+        self.loader: Loader = Loader(bot, directory, repository, **kwargs)
         self.loader.load()
         
     group = SlashCommandGroup("modules")
@@ -21,13 +21,11 @@ class LoaderCog(commands.Cog):
     @commands.is_owner()
     async def modules_reload(self, ctx: ApplicationContext) -> None:
         embed = Embed(timestamp = datetime.now(), title = "modules reload")
-        old_modules = "`, `".join(self.loader.modules)
+        old_modules = "`, `".join(list(self.loader.modules.keys()))
 
-        self.loader.unload()
-        self.loader.pull()
-        self.loader.load()
+        self.loader.update()
         
-        modules = "`, `".join(self.loader.modules)
+        modules = "`, `".join(list(self.loader.modules.keys()))
 
         embed.add_field(name = ":heavy_minus_sign: unloaded", value = old_modules)
         embed.add_field(name = ":heavy_plus_sign: loaded", value = modules)
@@ -46,5 +44,5 @@ class LoaderCog(commands.Cog):
         await ctx.respond(embed = embed)
 
 
-def load(bot: commands.Bot, directory: str, repository: str | None = None) -> None:
-    bot.add_cog(LoaderCog(bot, directory, repository))
+def load(bot: commands.Bot, directory: str, repository: str | None = None, **kwargs) -> None:
+    bot.add_cog(LoaderCog(bot, directory, repository, **kwargs))

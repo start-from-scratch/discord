@@ -1,46 +1,56 @@
 from discord.ext import commands
 from logging import getLogger
-from os.path import dirname, normpath, realpath, join, basename
+from os.path import join
+from types import ModuleType
 
-from utils import tree, clone
+from utils import tree, clone, get_main_dir
+from .modules import get_module_path, load, unload
 import __main__
 
 
 class Loader:
-    def __init__(self, bot: commands.Bot, directory: str, repository: str | None = None) -> None:
+    def __init__(self, bot: commands.Bot, directory: str, repository: str | None = None, **kwargs) -> None:
         self.bot: commands.Bot = bot
         self.directory: str = directory
         self.repository: str | None = repository
+        self.kwargs: dict = kwargs
 
         self.logger = getLogger()
-        self.root: str = dirname(realpath(__main__.__file__))
+        self.root: str = get_main_dir()
+
+        self.modules: dict[str: ModuleType] = {}
         self.cogs: list[str] = []
 
     def load(self) -> list[str]:
-        files: list[str] = tree(join(self.root, self.directory))
-        modules: list[str] = []
+        modules: dict[str: ModuleType] = {}
+        start_cog: int = len(self.bot.cogs.keys())
 
-        for file in files:
+        for file in tree(join(self.root, self.directory)):
             if file.endswith(".py"):
-                modules.append(file[len(self.root) + 1:][:-3].replace("\\", ".").replace("/", "."))
+                cog: ModuleType = load(file)
+                cog.setup(self.bot, **self.kwargs)
 
-        for module in modules:
-            self.bot.load_extension(module)
-            self.logger.info('Loaded "%s".' % module)
-
-        self.modules = modules
-        return self.modules
+                modules[get_module_path(file)] = cog
+                self.logger.info(f'Loaded "%s".' % list(modules.keys())[-1])
+        
+        self.modules, self.cogs = modules, list(self.bot.cogs.keys())[start_cog:]
+        return self.cogs
 
     def unload(self) -> None:
-        for extension in self.modules:
-            self.bot.unload_extension(extension)
-            self.logger.info(f'Unloaded "{extension}".')
+        for cog in self.cogs:
+            self.bot.remove_cog(cog)
+
+        for module in list(self.modules.keys()):
+            unload(self.modules[module])
+
+            self.logger.info('Unloaded "%s".' % module)
 
         self.modules = []
+        self.cogs = []
     
-    def pull(self) -> list[str]:
+    def update(self) -> list[str]:
         if not self.repository:
-            return self.modules
+            return self.cogs
         
         self.unload()
         tmpdir: str = clone(self.repository)
