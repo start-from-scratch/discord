@@ -4,7 +4,6 @@ from discord import Message, Embed, Colour, AuditLogAction
 class AntiGhostPing(commands.Cog):
     def __init__(self, bot: commands.Bot, **kwargs) -> None:
         self.bot = bot
-        print(text)
 
     @commands.Cog.listener()
     async def on_message_delete(self, ctx: Message) -> None:
