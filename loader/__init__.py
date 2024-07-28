@@ -1,1 +1,1 @@
-from .cog import load
+from .interface import load

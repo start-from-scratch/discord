@@ -1,7 +1,7 @@
 import importlib
 from types import ModuleType
 
-from utils import get_main_dir
+from .disk import get_main_dir, tree
 
 
 def get_module_path(file_path: str) -> str:
@@ -25,3 +25,12 @@ def load(file_path: str) -> ModuleType:
 
 def unload(module: ModuleType) -> None:
     del module
+
+
+def find(directory: str) -> list[str]:
+    files: list[str] = tree(directory)
+    modules: list[str] = []
+
+    [modules.append(file) if file.endswith(".py") else None for file in files]
+
+    return modules

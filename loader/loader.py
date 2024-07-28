@@ -2,9 +2,12 @@ from discord.ext import commands
 from logging import getLogger
 from os.path import join
 from types import ModuleType
+from tempfile import mkdtemp
 
-from utils import tree, clone, get_main_dir
-from .modules import get_module_path, load, unload
+from .git import clone
+from .disk import get_main_dir
+from .modules import load, unload, tree
+from .cogs import has_cog
 import __main__
 
 
@@ -18,32 +21,36 @@ class Loader:
         self.logger = getLogger()
         self.root: str = get_main_dir()
 
-        self.modules: dict[str: ModuleType] = {}
+        self.modules: list[ModuleType] = {}
         self.cogs: list[str] = []
 
     def load(self) -> list[str]:
-        modules: dict[str: ModuleType] = {}
-        start_cog: int = len(self.bot.cogs.keys())
+        files: list[str] = tree(self.directory)
+        modules: list[ModuleType] = []
+        index: int = len(self.bot.cogs.keys())
 
-        for file in tree(join(self.root, self.directory)):
-            if file.endswith(".py"):
-                cog: ModuleType = load(file)
-                cog.setup(self.bot, **self.kwargs)
+        for file in files:
+            module: ModuleType = load(file)
 
-                modules[get_module_path(file)] = cog
-                self.logger.info(f'Loaded "%s".' % list(modules.keys())[-1])
+            if has_cog(module):
+                module.setup(self.bot, **self.kwargs)
+                modules.append(module)
+
+                self.logger.info(f'Loaded "%s".' % module.__name__)
+            else:
+                unload(module)
         
-        self.modules, self.cogs = modules, list(self.bot.cogs.keys())[start_cog:]
+        self.modules, self.cogs = modules, list(self.bot.cogs.keys())[index:]
         return self.cogs
 
     def unload(self) -> None:
         for cog in self.cogs:
             self.bot.remove_cog(cog)
 
-        for module in list(self.modules.keys()):
-            unload(self.modules[module])
+        for module in self.modules:
+            unload(module)
 
-            self.logger.info('Unloaded "%s".' % module)
+            self.logger.info('Unloaded "%s".' % module.__name__)
 
         self.modules = []
         self.cogs = []
@@ -52,8 +59,10 @@ class Loader:
         if not self.repository:
             return self.cogs
         
+        tmpdir: str = mkdtemp()
+
         self.unload()
-        tmpdir: str = clone(self.repository)
+        clone(self.repository, tmpdir)
         
         for source in tree(join(str(tmpdir), self.directory)):
             path: str = source[len(join(tmpdir, self.directory)) + 1:]
