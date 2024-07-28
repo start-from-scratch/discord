@@ -5,21 +5,21 @@ from datetime import datetime
 from .loader import Loader
     
 
-class LoaderCog(commands.Cog):
-    def __init__(self, bot: commands.Bot, directory: str, repository: str | None = None, **kwargs) -> None:
+class LoaderInterfaceCog(commands.Cog):
+    def __init__(self, bot: commands.Bot, loader: Loader) -> None:
         self.bot: commands.Bot = bot
 
-        self.loader: Loader = Loader(bot, directory, repository, **kwargs)
+        self.loader: Loader = loader
         self.loader.load()
         
     group = SlashCommandGroup("modules")
 
     @group.command(
-        name = "reload",
-        description = "reload all modules"
+        name = "update",
+        description = "download modules from repository"
     )
     @commands.is_owner()
-    async def modules_reload(self, ctx: ApplicationContext) -> None:
+    async def modules_update(self, ctx: ApplicationContext) -> None:
         embed = Embed(timestamp = datetime.now(), title = "modules reload")
         old_modules = "`, `".join(list(self.loader.modules.keys()))
 
@@ -38,11 +38,23 @@ class LoaderCog(commands.Cog):
     )
     @commands.is_owner()
     async def modules_list(self, ctx: ApplicationContext) -> None:
-        description = "`, `".join(self.loader.modules) if len(self.loader.modules) > 1 else f"`{self.loader.modules[0]}`"
+        description = "`" + "`, `".join([module.__name__ for module in self.loader.modules]) + "`"
         embed = Embed(timestamp = datetime.now(), title = "modules", description = description)
         
         await ctx.respond(embed = embed)
 
+    @group.command(
+        name = "reload",
+        description = "reload all modules"
+    )
+    @commands.is_owner()
+    async def modules_update(self, ctx: ApplicationContext) -> None:
+        self.loader.unload()
+        self.loader.load()
+
+        await self.modules_list(ctx)
+
 
 def load(bot: commands.Bot, directory: str, repository: str | None = None, **kwargs) -> None:
-    bot.add_cog(LoaderCog(bot, directory, repository, **kwargs))
+    loader: Loader = Loader(bot, directory, repository, **kwargs)
+    bot.add_cog(LoaderInterfaceCog(bot, loader))
