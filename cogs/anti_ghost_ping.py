@@ -1,9 +1,15 @@
 from discord.ext import commands
 from discord import Message, Embed, Colour, AuditLogAction
 
+from cog import get_cogs
+
+cogs = get_cogs("discord")
+
+@cogs.cog
 class AntiGhostPing(commands.Cog):
     def __init__(self, bot: commands.Bot, **kwargs) -> None:
         self.bot = bot
+        bot.add_cog(self)
 
     @commands.Cog.listener()
     async def on_message_delete(self, ctx: Message) -> None:
@@ -23,6 +29,3 @@ class AntiGhostPing(commands.Cog):
         embed.add_field(name="Salon:", value=f"ID: {ctx.channel.id}\n Nom: <#{ctx.channel.id}>", inline = False)
 
         await ctx.channel.send(embed = embed)
-
-def setup(bot: commands.Bot, **kwargs) -> None:
-    bot.add_cog(AntiGhostPing(bot, **kwargs))

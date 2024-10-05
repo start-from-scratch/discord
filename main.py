@@ -8,7 +8,8 @@ from datetime import datetime
 from logging import Logger
 
 import logger as _logger
-import loader
+from module import load_directory
+from cog import get_cogs
 
 logger: Logger = _logger.init("logs")
 
@@ -16,19 +17,20 @@ config = json_load(open("config.json", "r"))
 start = int(time())
 version = "0.0.0"
 
+
+########
+# Cogs #
+########
+
 intents: Intents = Intents.all()
 bot: commands.Bot = commands.Bot(intents = intents)
 bot.remove_command("help")
 
-# load cogs
-loader.load(
-  bot=bot, 
-  directory="cogs", 
-  repository=config["repository"], 
-  
-  # kwargs
-  config=config
-)
+cogs = get_cogs("discord")
+cogs.kwargs = {"bot": bot}
+
+load_directory("cogs")
+
 
 def create_embed(title: str, description: str, author: str, color: Colour):
     embed = Embed(title=title, description=description, colour=color)
