@@ -8,4 +8,4 @@ RUN python3 -m pip install --no-cache -r requirements.txt
 
 VOLUME "/discord/logs/archives"
 
-ENTRYPOINT "python3 -B main.py"
+ENTRYPOINT "python3 main.py"
