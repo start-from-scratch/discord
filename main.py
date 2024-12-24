@@ -6,29 +6,26 @@ from time import time
 from random import choice as rchoice, randint
 from datetime import datetime
 from logging import Logger
+from logging.config import dictConfig as logging_dict_config
+from logging import getLogger
 
-import logger as _logger
 from module import load_directory
-from cog import get_cogs
+from cog import cogs
 
-logger: Logger = _logger.init("logs")
+with open("logging.json", "r") as f:
+  logging_dict_config(json_load(f))
+  
+logger = getLogger()
 
 config = json_load(open("config.json", "r"))
 start = int(time())
 version = "0.0.0"
 
-
-########
-# Cogs #
-########
-
 intents: Intents = Intents.all()
 bot: commands.Bot = commands.Bot(intents = intents)
 bot.remove_command("help")
 
-cogs = get_cogs("discord")
-cogs.kwargs = {"bot": bot}
-
+cogs["kwargs"] = {"bot": bot}
 load_directory("cogs")
 
 

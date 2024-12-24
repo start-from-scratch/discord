@@ -4,7 +4,7 @@ from os.path import dirname, realpath, splitext
 from typing import Tuple, List, Dict
 from sys import modules as loaded_modules
 
-from disk import tree as file_tree
+from file import tree as file_tree
 import __main__
 
 

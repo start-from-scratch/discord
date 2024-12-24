@@ -1,51 +1,31 @@
 from inspect import getfullargspec
+from typing import Union, Type
+from types import FunctionType
 
 
-class Cogs(dict):
-    def __init__(self) -> None:
-        super().__init__()
-        self.kwargs = {}
+cogs = {"callables": {}, "kwargs": {}}
 
-    def add_cog(self, obj: object) -> None:
-        if obj.__name__ in self: return
+
+def add_cog(callable: Union[Type, FunctionType]) -> None:
+    if callable.__name__ in cogs["callables"]: 
+        raise NameError(f"A callable object with the same name ({callable.__name__}) has already been loaded")
+            
+    spec = getfullargspec(callable)
+    requirements = spec.args + spec.kwonlyargs
+    
+    kwargs = {}
+    for key, value in cogs["kwargs"].items():
+        if key not in requirements:
+            continue
         
-        spec = getfullargspec(obj)
+        kwargs[key] = value
 
-        requirements = spec.args + spec.kwonlyargs
-        kwargs = {}
-        [kwargs.__setitem__(key, value) for key, value in self.kwargs.items() if key in requirements]
+    cogs["callables"][callable.__name__] = callable(**kwargs)
 
-        super().__setitem__(obj.__name__, obj(**kwargs))
-
-    def remove_cog(self, name: str) -> None:
-        obj = super().__getitem__(name)
-
-        del obj
-        super().pop(name)
-
-    def cog(self, obj: object) -> object:
-        self.add_cog(obj)
-        return obj
-
-
-class CogsGroups(dict):
-    def __init__(self) -> None:
-        super().__init__()
+def cog(callable: Union[Type, FunctionType]) -> object:
+    try:
+        add_cog(callable)
+    except NameError:
+        pass
     
-    def __setitem__(self, name: str, kwargs: dict) -> None:
-        obj = super().get(name) or Cogs()
-        obj.kwargs = kwargs
-
-        super().__setitem__(name, obj)
-    
-
-cogs_groups = CogsGroups()
-
-
-def get_cogs(name: str = None) -> Cogs:
-    if name == None: name = "default"
-    if name not in cogs_groups: cogs_groups[name] = {}
-
-    obj = cogs_groups.get(name)
-    
-    return obj
+    return callable

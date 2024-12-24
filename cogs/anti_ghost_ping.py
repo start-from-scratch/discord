@@ -1,13 +1,11 @@
 from discord.ext import commands
 from discord import Message, Embed, Colour, AuditLogAction
 
-from cog import get_cogs
+from cog import cog
 
-cogs = get_cogs("discord")
-
-@cogs.cog
+@cog
 class AntiGhostPing(commands.Cog):
-    def __init__(self, bot: commands.Bot, **kwargs) -> None:
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         bot.add_cog(self)
 
