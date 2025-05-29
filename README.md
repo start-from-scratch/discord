@@ -1,27 +1,18 @@
 # Pixelbot
 
+This repository contains the code of the dedicated bot of the discord server "[Start from Scratch](https://discord.gg/zQn3V5GSYK)".
 
 ## Usage
 
-```sh
-git clone https://github.com/swtchcoder/python-discord
-cd python-discord
+Using [Go compiler](https://go.dev/)
+```bash
+go mod download
+go build -o bot .
+./bot
 ```
 
-<details open>
-<summary>Base</summary>
-
-```sh
-python3 -m pip install -r requirements.txt
-python3 main.py
+Using [Docker](https://www.docker.com/)
+```bash
+docker build -t bot .
+docker run -d --restart=unless-stopped --name bot bot
 ```
-</details>
-
-<details>
-<summary>Docker</summary>
-    
-```sh
-docker build -t pixelbot .
-docker run -d --name pixelbot --restart unless-stopped pixelbot
-```
-</details>

@@ -1,11 +1,10 @@
-FROM python:3.12.4
+FROM golang:1.24.1 AS build
+WORKDIR /bot/
+COPY go.mod go.sum ./
+RUN go mod download
+COPY config.json main.go ./
+RUN go build -o bot .
 
-COPY . /discord
-
-WORKDIR /discord
-
-RUN python3 -m pip install --no-cache -r requirements.txt
-
-VOLUME "/discord/logs/archives"
-
-ENTRYPOINT "python3 main.py"
+FROM scratch
+COPY --from=builder /bot/bot /bot/bot
+ENTRYPOINT [ "/bot/bot" ]
